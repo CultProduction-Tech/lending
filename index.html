@@ -3,24 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SnoopDoc — документооборот для видеопродакшена</title>
-  <meta name="description" content="SnoopDoc — сервис управления подрядчиками и документами для видеопродакшенов, студий графики и фрилансеров. Станьте тестировщиком.">
+  <title>Снуп Док — проектные доки без боли</title>
+  <meta name="description" content="Снуп Док — создавайте и подписывайте документы с фриланс-командой проекта в одном месте онлайн.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --green-50: #f0fdf4;
-      --green-100: #dcfce7;
-      --green-200: #bbf7d0;
-      --green-400: #4ade80;
-      --green-500: #22c55e;
-      --green-600: #16a34a;
-      --green-700: #15803d;
-      --green-800: #166534;
-      --green-900: #14532d;
+      --blue-50: #eff6ff;
+      --blue-100: #dbeafe;
+      --blue-400: #60a5fa;
+      --blue-500: #227bff;
+      --blue-600: #1b62cc;
+      --blue-700: #1550a8;
+      --blue-800: #103d80;
+      --blue-900: #0c2d5e;
+      --purple-400: #a78bfa;
+      --purple-500: #8b5cf6;
       --gray-50: #f9fafb;
       --gray-100: #f3f4f6;
       --gray-200: #e5e7eb;
@@ -31,17 +32,7 @@
       --gray-700: #374151;
       --gray-800: #1f2937;
       --gray-900: #111827;
-      --blue-100: #dbeafe;
-      --blue-700: #1d4ed8;
-      --purple-100: #f3e8ff;
-      --purple-700: #7c3aed;
-      --orange-100: #ffedd5;
-      --orange-700: #c2410c;
-      --yellow-100: #fef9c3;
-      --yellow-700: #a16207;
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -49,23 +40,96 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      background: #fff;
     }
 
-    /* ===== UTILITIES ===== */
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
+    /* ===== COOKIE BANNER ===== */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--gray-900);
+      color: rgba(255,255,255,0.8);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 13px;
+      line-height: 1.5;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+      animation: slideUp 0.4s ease;
+    }
+    .cookie-banner.hidden { display: none; }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .cookie-accept {
+      padding: 8px 20px;
+      background: var(--blue-500);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .cookie-accept:hover { background: var(--blue-600); }
+
+    /* ===== LOGO ===== */
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      text-decoration: none;
+    }
+    .logo-mark .logo-snoop {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      color: var(--blue-500);
+    }
+    .logo-mark .logo-doc {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      color: #000;
+      margin-left: 8px;
+    }
+    .logo-mark .logo-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue-500);
+      margin-left: 2px;
+      vertical-align: baseline;
+      position: relative;
+      top: -1px;
+    }
+
     .btn-primary {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 16px 32px;
-      background: var(--green-600);
+      padding: 12px 24px;
+      background: var(--blue-500);
       color: #fff;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       border: none;
       border-radius: 12px;
@@ -73,814 +137,498 @@
       text-decoration: none;
       transition: all 0.2s;
     }
-    .btn-primary:hover { background: var(--green-700); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      background: transparent;
-      color: var(--green-600);
-      font-size: 16px;
-      font-weight: 600;
-      border: 2px solid var(--green-600);
-      border-radius: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-secondary:hover { background: var(--green-50); }
-
-    .section-label {
-      display: inline-block;
-      padding: 6px 16px;
-      background: var(--green-50);
-      color: var(--green-700);
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 100px;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-size: clamp(28px, 4vw, 40px);
-      font-weight: 800;
-      line-height: 1.2;
-      color: var(--gray-900);
-      margin-bottom: 16px;
-    }
-
-    .section-subtitle {
-      font-size: 18px;
-      color: var(--gray-500);
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    /* ===== HEADER ===== */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--gray-100);
-      transition: box-shadow 0.3s;
-    }
-    .header.scrolled { box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 72px;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--gray-900);
-    }
-    .logo-text { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
-    .logo-sub { font-size: 11px; color: var(--gray-400); font-weight: 500; margin-top: -2px; }
-
-    .header-cta {
-      padding: 10px 24px;
-      font-size: 14px;
-      border-radius: 10px;
+    .btn-primary:hover {
+      background: var(--blue-600);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(34, 123, 255, 0.3);
     }
 
     /* ===== HERO ===== */
     .hero {
-      padding: 140px 0 80px;
-      background: linear-gradient(180deg, #fff 0%, var(--green-50) 100%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 56px;
+      padding: 40px 48px 32px;
+      background: #fff;
       position: relative;
       overflow: hidden;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(34, 123, 255, 0.06) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
     }
     .hero::after {
       content: '';
       position: absolute;
-      top: 100px;
-      right: -200px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(22, 163, 74, 0.06) 0%, transparent 70%);
+      bottom: -15%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.04) 0%, transparent 65%);
       border-radius: 50%;
       pointer-events: none;
     }
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: var(--green-100);
-      color: var(--green-800);
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 100px;
-      margin-bottom: 24px;
-    }
-    .hero-badge-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--green-500);
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      flex-shrink: 0;
+      text-align: left;
     }
     .hero h1 {
-      font-size: clamp(36px, 5vw, 56px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #227bff, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .hero h1 span { color: var(--green-600); }
+    .hero-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(18px, 2.5vw, 24px);
+      font-weight: 700;
+      color: var(--gray-500);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
     .hero-desc {
-      font-size: 18px;
-      color: var(--gray-600);
-      line-height: 1.7;
-      margin-bottom: 36px;
-      max-width: 520px;
-    }
-    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
-    .hero-note {
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--gray-400);
-    }
-
-    /* Hero Mockup */
-    .hero-mockup {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
-      border: 1px solid var(--gray-200);
-      overflow: hidden;
-      position: relative;
-    }
-    .mockup-topbar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 16px;
-      background: var(--gray-50);
-      border-bottom: 1px solid var(--gray-200);
-    }
-    .mockup-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--gray-300);
-    }
-    .mockup-dot:first-child { background: #ff5f57; }
-    .mockup-dot:nth-child(2) { background: #ffbd2e; }
-    .mockup-dot:nth-child(3) { background: #28c840; }
-
-    .mockup-body {
-      display: flex;
-      min-height: 340px;
-    }
-
-    /* Mockup Sidebar */
-    .mockup-sidebar {
-      width: 180px;
-      background: #fff;
-      border-right: 1px solid var(--gray-200);
-      padding: 16px 12px;
-      flex-shrink: 0;
-    }
-    .mockup-sidebar-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--gray-100);
-    }
-    .mockup-sidebar-logo span { font-size: 14px; font-weight: 700; color: var(--gray-900); }
-    .mockup-nav-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      color: var(--gray-600);
-      margin-bottom: 2px;
-    }
-    .mockup-nav-item.active {
-      background: var(--green-50);
-      color: var(--green-700);
-      font-weight: 600;
-    }
-    .mockup-nav-icon {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      background: var(--gray-200);
-      flex-shrink: 0;
-    }
-    .mockup-nav-item.active .mockup-nav-icon { background: var(--green-200); }
-
-    /* Mockup Main Content */
-    .mockup-main {
-      flex: 1;
-      min-width: 0;
-      padding: 20px;
-      background: var(--gray-50);
-      overflow: hidden;
-    }
-    .mockup-header-text {
       font-size: 16px;
-      font-weight: 700;
-      color: var(--gray-900);
-      margin-bottom: 4px;
+      color: var(--gray-500);
+      line-height: 1.65;
+      margin-bottom: 24px;
     }
-    .mockup-header-sub {
-      font-size: 11px;
-      color: var(--gray-400);
-      margin-bottom: 16px;
-    }
-
-    /* Stat Cards */
-    .mockup-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+    .hero-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 28px;
     }
-    .mockup-stat-card {
-      background: #fff;
-      border: 1px solid var(--gray-200);
-      border-radius: 10px;
-      padding: 12px;
-    }
-    .mockup-stat-num {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--gray-900);
-      line-height: 1;
-    }
-    .mockup-stat-num.green { color: var(--green-600); }
-    .mockup-stat-label {
-      font-size: 10px;
-      color: var(--gray-400);
-      margin-top: 4px;
-    }
-
-    /* Mockup Table */
-    .mockup-table {
-      background: #fff;
-      border: 1px solid var(--gray-200);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .mockup-table-header {
-      display: grid;
-      grid-template-columns: 3fr 2fr 2fr 1fr;
-      gap: 6px;
-      padding: 8px 14px;
-      background: var(--gray-50);
-      border-bottom: 1px solid var(--gray-200);
-      font-size: 10px;
-      color: var(--gray-400);
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .mockup-table-row {
-      display: grid;
-      grid-template-columns: 3fr 2fr 2fr 1fr;
-      gap: 6px;
-      padding: 10px 14px;
-      font-size: 11px;
-      border-bottom: 1px solid var(--gray-100);
+    .hero-bullets li {
+      display: flex;
       align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-700);
     }
-    .mockup-table-row > div { min-width: 0; overflow: hidden; }
-    .mockup-table-row:last-child { border-bottom: none; }
-    .mockup-project-name { font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mockup-project-client { font-size: 10px; color: var(--gray-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mockup-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 600;
-    }
-    .mockup-badge-green { background: var(--green-100); color: var(--green-700); }
-    .mockup-badge-blue { background: var(--blue-100); color: var(--blue-700); }
-
-    /* ===== PAIN SECTION ===== */
-    .pain {
-      padding: 100px 0;
-      background: var(--gray-900);
-      position: relative;
-      overflow: hidden;
-    }
-    .pain::before {
-      content: '';
-      position: absolute;
-      top: -200px;
-      right: -200px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.06) 0%, transparent 70%);
+    .bullet-icon {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
       border-radius: 50%;
-      pointer-events: none;
-    }
-    .pain-header { text-align: center; margin-bottom: 60px; }
-    .pain-header .section-title { color: #fff; }
-    .pain-header .section-subtitle { margin: 0 auto; color: var(--gray-400); }
-    .pain-header .section-label { background: rgba(239, 68, 68, 0.1); color: #f87171; }
-    .pain-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    .pain-card {
-      padding: 28px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.03);
-      transition: all 0.25s;
-      position: relative;
-    }
-    .pain-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      border-radius: 16px 16px 0 0;
-      background: linear-gradient(90deg, #ef4444, #f97316);
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-    .pain-card:hover { border-color: rgba(239, 68, 68, 0.2); background: rgba(255,255,255,0.05); }
-    .pain-card:hover::before { opacity: 1; }
-    .pain-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: rgba(239, 68, 68, 0.1);
+      background: var(--blue-500);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 16px;
-      font-size: 22px;
     }
-    .pain-card h3 {
-      font-size: 17px;
+    .bullet-icon svg {
+      width: 13px;
+      height: 13px;
+      color: #fff;
+    }
+    .hero-cta {
+      padding: 14px 32px;
+      font-size: 16px;
+      border-radius: 14px;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      margin-bottom: 8px;
-      color: #fff;
     }
-    .pain-card p {
-      font-size: 14px;
+    .hero-note {
+      margin-top: 12px;
+      font-size: 13px;
       color: var(--gray-400);
-      line-height: 1.6;
     }
 
-    /* ===== FEATURES / PRODUCT ===== */
-    .features {
-      padding: 100px 0;
-      background: var(--gray-900);
-      color: #fff;
+    /* ===== CAROUSEL ===== */
+    .carousel-section {
+      position: relative;
+      z-index: 1;
+      max-width: 580px;
+      width: 100%;
+      flex-shrink: 1;
+      min-width: 0;
     }
-    .features .section-label { background: rgba(22, 163, 74, 0.15); color: var(--green-400); }
-    .features .section-title { color: #fff; }
-    .features .section-subtitle { color: var(--gray-400); }
-    .features-header { text-align: center; margin-bottom: 60px; }
-
-    .feature-block {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      margin-bottom: 80px;
-    }
-    .feature-block:last-child { margin-bottom: 0; }
-    .feature-block.reverse { direction: rtl; }
-    .feature-block.reverse > * { direction: ltr; }
-
-    .feature-text h3 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-    .feature-text p {
-      font-size: 15px;
-      color: var(--gray-400);
-      line-height: 1.7;
-      margin-bottom: 20px;
-    }
-    .feature-list {
-      list-style: none;
-    }
-    .feature-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--gray-300);
-      margin-bottom: 10px;
-    }
-    .feature-list li::before {
-      content: '';
-      width: 20px;
-      height: 20px;
-      min-width: 20px;
-      border-radius: 50%;
-      background: var(--green-600);
-      margin-top: 1px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 12px;
-    }
-
-    /* Feature Mockups (dark variant) */
-    .feature-mockup {
-      background: var(--gray-800);
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
+    .carousel-viewport {
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      border-radius: 14px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.08), 0 0 0 1px var(--gray-200);
+      background: #fff;
     }
-    .feature-mockup .mockup-topbar {
-      background: rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    .carousel-track {
+      display: flex;
+      transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .feature-mockup .mockup-dot { background: rgba(255,255,255,0.15); }
-    .feature-mockup .mockup-dot:first-child { background: #ff5f57; }
-    .feature-mockup .mockup-dot:nth-child(2) { background: #ffbd2e; }
-    .feature-mockup .mockup-dot:nth-child(3) { background: #28c840; }
+    .carousel-slide {
+      min-width: 100%;
+      background: #fff;
+      text-align: left;
+    }
 
-    .fm-content { padding: 20px; }
-    .fm-title { font-size: 13px; font-weight: 600; color: var(--gray-300); margin-bottom: 12px; }
-
-    /* Contractors mockup */
-    .fm-contractor-list { display: flex; flex-direction: column; gap: 8px; }
-    .fm-contractor {
+    /* Carousel controls */
+    .carousel-controls {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
+      justify-content: center;
+      gap: 14px;
+      margin-top: 16px;
     }
-    .fm-avatar {
+    .carousel-btn {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: var(--green-600);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-    .fm-contractor-info { flex: 1; min-width: 0; overflow: hidden; }
-    .fm-contractor-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .fm-contractor-role { font-size: 11px; color: var(--gray-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .fm-contractor-type {
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 600;
-    }
-    .fm-type-sz { background: rgba(22, 163, 74, 0.15); color: var(--green-400); }
-    .fm-type-ip { background: rgba(124, 58, 237, 0.15); color: #c084fc; }
-    .fm-type-ul { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
-
-    /* Document flow mockup */
-    .fm-doc-flow { display: flex; flex-direction: column; gap: 10px; }
-    .fm-doc-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 8px;
-      align-items: center;
-      padding: 10px 12px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .fm-doc-label { font-size: 12px; color: #fff; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .fm-doc-sub { font-size: 10px; color: var(--gray-500); white-space: nowrap; }
-    .fm-doc-status {
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 600;
-      text-align: center;
-      white-space: nowrap;
-    }
-    .fm-status-signed { background: rgba(22, 163, 74, 0.15); color: var(--green-400); }
-    .fm-status-progress { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
-    .fm-status-wait { background: rgba(234, 179, 8, 0.15); color: #fbbf24; }
-
-    .fm-doc-header {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 8px;
-      padding: 0 12px 8px;
-      font-size: 10px;
-      color: var(--gray-500);
-      text-transform: uppercase;
-      font-weight: 600;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    /* ===== HOW IT WORKS ===== */
-    .how {
-      padding: 100px 0;
-      background: #fff;
-    }
-    .how-header { text-align: center; margin-bottom: 60px; }
-    .how-header .section-subtitle { margin: 0 auto; }
-    .how-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-    }
-    .how-step {
-      text-align: center;
-      padding: 32px 20px;
-      border-radius: 16px;
-      background: var(--gray-50);
-      border: 1px solid var(--gray-100);
-      position: relative;
-    }
-    .how-step-num {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--green-600);
-      color: #fff;
-      font-size: 20px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-    }
-    .how-step h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--gray-900);
-    }
-    .how-step p {
-      font-size: 13px;
-      color: var(--gray-500);
-      line-height: 1.6;
-    }
-    .how-step-arrow {
-      position: absolute;
-      right: -18px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--gray-300);
-      font-size: 20px;
-      z-index: 1;
-    }
-
-    /* ===== AUDIENCE ===== */
-    .audience {
-      padding: 100px 0;
-      background: var(--green-50);
-    }
-    .audience-header { text-align: center; margin-bottom: 60px; }
-    .audience-header .section-subtitle { margin: 0 auto; }
-    .audience-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .audience-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 36px 28px;
       border: 1px solid var(--gray-200);
-      text-align: center;
-      transition: all 0.2s;
-    }
-    .audience-card:hover { border-color: var(--green-300); box-shadow: 0 8px 24px rgba(22, 163, 74, 0.08); }
-    .audience-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      background: var(--green-100);
+      background: #fff;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 28px;
-    }
-    .audience-card h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--gray-900);
-    }
-    .audience-card p {
-      font-size: 14px;
       color: var(--gray-500);
-      line-height: 1.6;
+      transition: all 0.15s;
     }
-    .audience-card ul {
-      list-style: none;
-      margin-top: 16px;
-      text-align: left;
+    .carousel-btn:hover {
+      border-color: var(--blue-500);
+      color: var(--blue-600);
+      box-shadow: 0 2px 8px rgba(34, 123, 255, 0.12);
     }
-    .audience-card ul li {
-      font-size: 13px;
-      color: var(--gray-600);
-      padding: 6px 0;
-      border-bottom: 1px solid var(--gray-100);
+    .carousel-dots {
       display: flex;
-      align-items: center;
       gap: 8px;
     }
-    .audience-card ul li:last-child { border-bottom: none; }
-    .audience-card ul li::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      background: var(--green-500);
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      flex-shrink: 0;
+      background: var(--gray-300);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 0;
+    }
+    .carousel-dot.active {
+      background: var(--blue-500);
+      transform: scale(1.25);
+    }
+    .carousel-label {
+      font-size: 12px;
+      color: var(--gray-400);
+      font-weight: 500;
+      min-width: 85px;
+      text-align: center;
     }
 
-    /* ===== FAQ ===== */
-    .faq {
-      padding: 100px 0;
-      background: #fff;
-    }
-    .faq-header { text-align: center; margin-bottom: 60px; }
-    .faq-header .section-subtitle { margin: 0 auto; }
-    .faq-list {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    .faq-item {
+    /* Slide topbar (light) */
+    .slide-topbar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      background: var(--gray-100);
       border-bottom: 1px solid var(--gray-200);
     }
-    .faq-question {
+    .slide-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .slide-dot:nth-child(1) { background: #ff5f57; }
+    .slide-dot:nth-child(2) { background: #ffbd2e; }
+    .slide-dot:nth-child(3) { background: #28c840; }
+
+    .slide-body { display: flex; min-height: 290px; }
+
+    /* Sidebar (light) */
+    .sc-sidebar {
+      width: 150px;
+      background: var(--gray-50);
+      border-right: 1px solid var(--gray-200);
+      padding: 14px 8px;
+      flex-shrink: 0;
+    }
+    .sc-sidebar-brand {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 20px 0;
-      background: none;
-      border: none;
-      font-size: 16px;
+      gap: 7px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .sc-sidebar-logo {
+      width: 20px; height: 20px;
+      border-radius: 5px;
+      background: var(--blue-500);
+    }
+    .sc-sidebar-brand span { font-size: 11px; font-weight: 700; color: var(--gray-800); }
+    .sc-nav-item {
+      display: flex; align-items: center; gap: 7px;
+      padding: 6px 8px; border-radius: 6px;
+      font-size: 11px; color: var(--gray-400);
+      margin-bottom: 2px;
+    }
+    .sc-nav-item.active {
+      background: var(--blue-50);
+      color: var(--blue-500);
       font-weight: 600;
-      color: var(--gray-900);
-      cursor: pointer;
-      text-align: left;
-      font-family: inherit;
     }
-    .faq-question:hover { color: var(--green-600); }
-    .faq-chevron {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-      transition: transform 0.2s;
-      color: var(--gray-400);
+    .sc-nav-dot {
+      width: 13px; height: 13px; border-radius: 4px;
+      background: var(--gray-200); flex-shrink: 0;
     }
-    .faq-item.open .faq-chevron { transform: rotate(180deg); }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
+    .sc-nav-item.active .sc-nav-dot { background: rgba(34, 123, 255, 0.2); }
+
+    /* Main content area (light) */
+    .sc-main {
+      flex: 1; min-width: 0;
+      padding: 16px;
+      background: #fff;
     }
-    .faq-item.open .faq-answer { max-height: 200px; }
-    .faq-answer p {
-      padding-bottom: 20px;
-      font-size: 15px;
-      color: var(--gray-500);
-      line-height: 1.7;
+    .sc-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .sc-title { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .sc-title-sub { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+    .sc-add-btn {
+      padding: 4px 10px; border-radius: 6px;
+      background: var(--blue-500); color: #fff;
+      font-size: 10px; font-weight: 600; border: none;
     }
 
-    /* ===== CTA FOOTER ===== */
-    .cta-section {
-      padding: 100px 0;
-      background: var(--gray-900);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    /* Stats (light) */
+    .sc-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-bottom: 14px;
     }
-    .cta-section::before {
-      content: '';
-      position: absolute;
-      top: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 800px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(22, 163, 74, 0.12) 0%, transparent 70%);
-      pointer-events: none;
+    .sc-stat {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px; padding: 10px;
     }
-    .cta-section .section-title { color: #fff; margin-bottom: 16px; }
-    .cta-section p { color: var(--gray-400); font-size: 18px; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .cta-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-    .cta-note { color: var(--gray-500); font-size: 13px; margin-top: 20px; }
+    .sc-stat-num { font-size: 20px; font-weight: 700; color: var(--gray-900); line-height: 1; }
+    .sc-stat-num.green { color: var(--blue-500); }
+    .sc-stat-num.purple { color: var(--purple-500); }
+    .sc-stat-label { font-size: 9px; color: var(--gray-400); margin-top: 3px; }
+
+    /* Table (light) */
+    .sc-table {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px; overflow: hidden;
+    }
+    .sc-table-head {
+      display: grid; gap: 6px; padding: 7px 12px;
+      font-size: 9px; color: var(--gray-400);
+      font-weight: 600; text-transform: uppercase;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .sc-table-row {
+      display: grid; gap: 6px; padding: 8px 12px;
+      font-size: 10px;
+      border-bottom: 1px solid var(--gray-100);
+      align-items: center;
+    }
+    .sc-table-row:last-child { border-bottom: none; }
+    .sc-table-head.cols-4, .sc-table-row.cols-4 { grid-template-columns: 3fr 2fr 2fr 1.2fr; }
+    .sc-table-head.cols-3, .sc-table-row.cols-3 { grid-template-columns: 2fr 1fr 1fr; }
+    .sc-project { font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sc-sub { font-size: 9px; color: var(--gray-400); }
+    .sc-text { font-size: 10px; color: var(--gray-500); }
+    .sc-text-bright { font-size: 10px; color: var(--gray-700); }
+    .sc-badge {
+      display: inline-block; padding: 2px 7px;
+      border-radius: 4px; font-size: 9px; font-weight: 600;
+    }
+    .sc-badge-green { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+    .sc-badge-purple { background: rgba(139, 92, 246, 0.1); color: var(--purple-500); }
+    .sc-badge-yellow { background: rgba(234, 179, 8, 0.1); color: #b45309; }
+    .sc-badge-dim { background: var(--gray-100); color: var(--gray-400); }
+
+    /* Contractor list (light) */
+    .sc-contractor {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 8px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      margin-bottom: 5px;
+    }
+    .sc-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--blue-500);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; font-weight: 600; flex-shrink: 0;
+    }
+    .sc-contractor-info { flex: 1; min-width: 0; }
+    .sc-contractor-name { font-size: 11px; font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sc-contractor-role { font-size: 9px; color: var(--gray-400); }
+    .sc-type-badge {
+      padding: 2px 6px; border-radius: 4px;
+      font-size: 8px; font-weight: 600;
+    }
+    .sc-type-sz { background: rgba(34, 123, 255, 0.08); color: var(--blue-500); }
+    .sc-type-ip { background: rgba(139, 92, 246, 0.08); color: var(--purple-500); }
+    .sc-type-ul { background: rgba(59, 130, 246, 0.08); color: #2563eb; }
 
     /* ===== FOOTER ===== */
     .footer {
-      padding: 40px 0;
-      background: var(--gray-900);
-      border-top: 1px solid rgba(255,255,255,0.06);
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 14px 0;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--gray-100);
+      z-index: 50;
     }
     .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0; text-decoration: none;
     }
-    .footer-logo span { font-size: 16px; font-weight: 700; color: #fff; }
-    .footer-copy { font-size: 13px; color: var(--gray-500); }
+    .footer-logo .fl-snoop {
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 13px;
+      letter-spacing: -0.03em; color: var(--blue-500);
+    }
+    .footer-logo .fl-doc {
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 13px;
+      letter-spacing: -0.03em; color: var(--gray-700); margin-left: 4px;
+    }
+    .footer-copy { font-size: 12px; color: var(--gray-400); }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-      .hero-mockup { max-width: 600px; }
-      .feature-block { grid-template-columns: 1fr; gap: 32px; }
-      .feature-block.reverse { direction: ltr; }
-      .how-steps { grid-template-columns: repeat(2, 1fr); }
-      .how-step-arrow { display: none; }
+
+    @media (max-width: 960px) {
+      .hero {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        padding: 36px 24px 80px;
+        gap: 32px;
+      }
+      .hero-content {
+        max-width: 560px;
+        text-align: center;
+      }
+      .hero-bullets { align-items: center; }
+      .hero-bullets li { text-align: left; }
+      .hero-cta { margin: 0 auto; }
+      .hero-note { text-align: center; }
+      .carousel-section { max-width: 560px; }
+      .footer { position: static; padding: 18px 0; }
     }
 
     @media (max-width: 768px) {
-      .hero { padding: 120px 0 60px; }
-      .hero-desc { font-size: 16px; }
-      .pain-grid { grid-template-columns: 1fr; }
-      .audience-grid { grid-template-columns: 1fr; }
-      .how-steps { grid-template-columns: 1fr; }
-      .mockup-sidebar { display: none; }
-      .mockup-stats { grid-template-columns: repeat(3, 1fr); }
-      .mockup-table-header, .mockup-table-row { grid-template-columns: 3fr 2fr 1fr; }
-      .mockup-table-header > *:nth-child(3),
-      .mockup-table-row > *:nth-child(3) { display: none; }
-      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
-      .header-cta span { display: none; }
+      .hero { padding: 28px 18px 72px; gap: 28px; }
+      .hero h1 { font-size: 42px; margin-bottom: 6px; }
+      .hero-subtitle { font-size: 18px; margin-bottom: 12px; }
+      .hero-desc { font-size: 14px; margin-bottom: 18px; line-height: 1.6; }
+      .hero-bullets { gap: 8px; margin-bottom: 22px; }
+      .hero-bullets li { font-size: 14px; gap: 8px; }
+      .bullet-icon { width: 22px; height: 22px; min-width: 22px; }
+      .bullet-icon svg { width: 12px; height: 12px; }
+      .hero-cta { padding: 13px 28px; font-size: 15px; border-radius: 12px; }
+      .hero-note { font-size: 12px; }
+      .sc-sidebar { display: none; }
+      .slide-body { min-height: 250px; }
+      .sc-main { padding: 14px; }
+      .sc-title { font-size: 13px; }
+      .sc-stats { gap: 6px; margin-bottom: 10px; }
+      .sc-stat { padding: 8px; }
+      .sc-stat-num { font-size: 17px; }
+      .sc-stat-label { font-size: 8px; }
+      .carousel-controls { gap: 10px; margin-top: 12px; }
+      .carousel-btn { width: 32px; height: 32px; }
+      .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
+      .cookie-banner { padding: 14px 16px; gap: 14px; font-size: 12px; }
     }
 
     @media (max-width: 480px) {
-      .container { padding: 0 16px; }
-      .hero-buttons { flex-direction: column; }
-      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-      .cta-buttons { flex-direction: column; align-items: center; }
-      .mockup-stats { grid-template-columns: 1fr; }
+      .hero { padding: 20px 16px 68px; gap: 24px; }
+      .hero h1 { font-size: 36px; }
+      .hero-subtitle { font-size: 16px; margin-bottom: 10px; }
+      .hero-desc { font-size: 13px; margin-bottom: 16px; }
+      .hero-bullets { gap: 7px; margin-bottom: 20px; }
+      .hero-bullets li { font-size: 13px; }
+      .hero-cta { width: 100%; justify-content: center; padding: 14px 20px; font-size: 15px; }
+      .hero-note { font-size: 11px; margin-top: 10px; }
+      .carousel-viewport { border-radius: 10px; }
+      .carousel-label { display: none; }
+      .slide-topbar { padding: 8px 12px; }
+      .slide-dot { width: 8px; height: 8px; }
+      .slide-body { min-height: 220px; }
+      .sc-main { padding: 12px; }
+      .sc-header { margin-bottom: 10px; }
+      .sc-title { font-size: 12px; }
+      .sc-title-sub { font-size: 9px; }
+      .sc-add-btn { font-size: 9px; padding: 3px 8px; }
+      .sc-stats { grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 8px; }
+      .sc-stat { padding: 7px; border-radius: 6px; }
+      .sc-stat-num { font-size: 15px; }
+      .sc-stat-label { font-size: 7px; }
+      .sc-table-head { font-size: 8px; padding: 6px 10px; }
+      .sc-table-row { font-size: 9px; padding: 7px 10px; }
+      .sc-project { font-size: 10px; }
+      .sc-sub { font-size: 8px; }
+      .sc-badge { font-size: 8px; padding: 2px 5px; }
+      .sc-contractor { padding: 6px 8px; gap: 8px; border-radius: 6px; margin-bottom: 4px; }
+      .sc-avatar { width: 26px; height: 26px; font-size: 9px; }
+      .sc-contractor-name { font-size: 10px; }
+      .sc-contractor-role { font-size: 8px; }
+      .sc-type-badge { font-size: 7px; padding: 1px 5px; }
+      .carousel-controls { margin-top: 10px; gap: 8px; }
+      .carousel-btn { width: 30px; height: 30px; }
+      .carousel-btn svg { width: 14px; height: 14px; }
+      .carousel-dot { width: 6px; height: 6px; }
+      .footer { padding: 12px 0; }
+      .footer-logo .fl-snoop, .footer-logo .fl-doc { font-size: 11px; }
+      .footer-copy { font-size: 11px; }
+      .cookie-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 14px 16px;
+        gap: 10px;
+        font-size: 12px;
+      }
+      .cookie-accept { width: 100%; padding: 10px; font-size: 13px; }
+      .logo-mark .logo-snoop, .logo-mark .logo-doc { font-size: 30px; }
+    }
+
+    @media (max-width: 360px) {
+      .hero { padding: 16px 12px 64px; }
+      .hero h1 { font-size: 30px; }
+      .hero-subtitle { font-size: 14px; }
+      .hero-desc { font-size: 12px; }
+      .hero-bullets li { font-size: 12px; }
+      .slide-body { min-height: 200px; }
     }
 
     /* ===== MODAL ===== */
     .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
+      display: none; position: fixed; inset: 0; z-index: 1000;
       background: rgba(17, 24, 39, 0.6);
-      backdrop-filter: blur(6px);
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px 20px;
-      overflow-y: auto;
+      backdrop-filter: blur(8px);
+      align-items: flex-start; justify-content: center;
+      padding: 40px 20px; overflow-y: auto;
     }
     .modal-overlay.active { display: flex; }
 
     .modal-card {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
-      width: 100%;
-      max-width: 520px;
+      background: #fff; border-radius: 20px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+      width: 100%; max-width: 520px;
       padding: 40px 36px 36px;
       position: relative;
       animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -892,676 +640,311 @@
     }
 
     .modal-close {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      width: 32px;
-      height: 32px;
-      border: none;
-      background: transparent;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gray-400);
-      transition: all 0.15s;
+      position: absolute; top: 18px; right: 18px;
+      width: 32px; height: 32px;
+      border: none; background: transparent; border-radius: 8px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--gray-400); transition: all 0.15s;
     }
     .modal-close:hover { background: var(--gray-100); color: var(--gray-600); }
 
     .modal-header {
-      text-align: center;
-      margin-bottom: 24px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--gray-100);
+      text-align: center; margin-bottom: 24px;
+      padding-bottom: 24px; border-bottom: 1px solid var(--gray-100);
     }
     .modal-title {
       font-family: 'Montserrat', 'Inter', sans-serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--gray-900);
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
+      font-size: 24px; font-weight: 800; color: var(--gray-900);
+      letter-spacing: -0.02em; margin-bottom: 12px;
     }
-    .modal-title span { color: var(--green-600); }
-    .modal-desc {
-      font-size: 13px;
-      color: var(--gray-500);
-      line-height: 1.65;
-    }
-    .modal-trial {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 5px 14px;
-      background: var(--green-50);
-      color: var(--green-700);
-      font-size: 12px;
-      font-weight: 600;
+    .modal-title .mt-snoop { color: var(--blue-500); }
+    .modal-title .mt-doc { color: #000; }
+    .modal-desc { font-size: 14px; color: var(--gray-500); line-height: 1.65; }
+    .modal-early {
+      display: inline-block; margin-top: 12px;
+      padding: 5px 14px; background: var(--blue-50);
+      color: var(--blue-800); font-size: 12px; font-weight: 600;
       border-radius: 100px;
     }
 
     .modal-field { margin-bottom: 18px; }
     .modal-field:last-of-type { margin-bottom: 24px; }
     .modal-field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gray-700);
-      margin-bottom: 6px;
-      line-height: 1.4;
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--gray-700); margin-bottom: 6px; line-height: 1.4;
     }
-    .modal-field label .req { color: var(--green-600); margin-left: 2px; }
+    .modal-field label .req { color: var(--blue-500); margin-left: 2px; }
     .modal-field input,
     .modal-field textarea,
     .modal-field select {
-      width: 100%;
-      padding: 10px 13px;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      border: 1.5px solid var(--gray-200);
-      border-radius: 10px;
-      outline: none;
-      transition: all 0.15s;
-      color: var(--gray-900);
-      background: var(--gray-50);
+      width: 100%; padding: 10px 13px;
+      font-size: 14px; font-family: 'Inter', sans-serif;
+      border: 1.5px solid var(--gray-200); border-radius: 10px;
+      outline: none; transition: all 0.15s;
+      color: var(--gray-900); background: var(--gray-50);
     }
     .modal-field textarea { resize: vertical; min-height: 60px; }
     .modal-field select {
-      cursor: pointer;
-      appearance: none;
+      cursor: pointer; appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
+      background-repeat: no-repeat; background-position: right 12px center;
       padding-right: 36px;
     }
     .modal-field input::placeholder,
     .modal-field textarea::placeholder { color: var(--gray-400); font-size: 13px; }
     .modal-field input:focus,
     .modal-field textarea:focus,
-    .modal-field select:focus { border-color: var(--green-500); background: #fff; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1); }
+    .modal-field select:focus { border-color: var(--blue-500); background: #fff; box-shadow: 0 0 0 3px rgba(34, 123, 255, 0.1); }
     .modal-field.error input,
     .modal-field.error textarea,
     .modal-field.error select { border-color: #ef4444; background: #fef2f2; }
     .modal-field.error input:focus,
     .modal-field.error textarea:focus,
     .modal-field.error select:focus { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); }
-    .modal-field .field-error {
-      font-size: 12px;
-      color: #ef4444;
-      margin-top: 4px;
-      display: none;
-    }
+    .modal-field .field-error { font-size: 12px; color: #ef4444; margin-top: 4px; display: none; }
     .modal-field.error .field-error { display: block; }
 
-    .modal-submit {
-      width: 100%;
-      padding: 13px;
-      font-size: 15px;
-      font-weight: 700;
-      font-family: 'Montserrat', 'Inter', sans-serif;
-      color: #fff;
-      background: var(--green-600);
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.01em;
-    }
-    .modal-submit:hover { background: var(--green-700); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
-    .modal-submit:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .modal-success {
-      display: none;
+    .modal-consent {
+      font-size: 11px;
+      color: var(--gray-400);
       text-align: center;
-      padding: 40px 20px;
+      line-height: 1.5;
+      margin-bottom: 14px;
     }
+    .modal-consent a {
+      color: var(--blue-500);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .modal-consent a:hover { color: var(--blue-600); }
+
+    .modal-submit {
+      width: 100%; padding: 14px; font-size: 15px; font-weight: 700;
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      color: #fff; background: var(--blue-500);
+      border: none; border-radius: 12px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .modal-submit:hover { background: var(--blue-600); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(34, 123, 255, 0.25); }
+    .modal-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .modal-success { display: none; text-align: center; padding: 40px 20px; }
     .modal-success.active { display: block; }
     .modal-success-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: var(--green-100);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--blue-100);
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 20px;
     }
     .modal-success h3 {
       font-family: 'Montserrat', 'Inter', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--gray-900);
-      margin-bottom: 8px;
+      font-size: 22px; font-weight: 800; color: var(--gray-900); margin-bottom: 8px;
     }
-    .modal-success p {
-      font-size: 14px;
-      color: var(--gray-500);
-      line-height: 1.6;
-    }
+    .modal-success p { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
 
+    @media (max-width: 768px) {
+      .modal-overlay { padding: 20px 14px; }
+      .modal-card { padding: 32px 24px 28px; border-radius: 16px; }
+      .modal-title { font-size: 20px; }
+      .modal-desc { font-size: 13px; }
+    }
     @media (max-width: 480px) {
-      .modal-overlay { padding: 16px 12px; }
-      .modal-card { padding: 28px 20px 24px; }
+      .modal-overlay { padding: 12px 10px; }
+      .modal-card { padding: 24px 16px 20px; border-radius: 14px; }
+      .modal-title { font-size: 18px; margin-bottom: 8px; }
+      .modal-desc { font-size: 12px; }
+      .modal-early { font-size: 11px; padding: 4px 12px; }
+      .modal-header { margin-bottom: 18px; padding-bottom: 18px; }
+      .modal-field { margin-bottom: 14px; }
+      .modal-field label { font-size: 12px; }
+      .modal-field input,
+      .modal-field textarea,
+      .modal-field select { font-size: 14px; padding: 9px 11px; border-radius: 8px; }
+      .modal-submit { padding: 13px; font-size: 14px; border-radius: 10px; }
+      .modal-success h3 { font-size: 18px; }
+      .modal-success p { font-size: 13px; }
+      .modal-success-icon { width: 52px; height: 52px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header" id="header">
-    <div class="container header-inner">
-      <a href="#" class="logo">
-        <div>
-          <div class="logo-text">SnoopDoc</div>
-          <div class="logo-sub">документооборот для продакшена</div>
-        </div>
-      </a>
-      <button onclick="openModal()" class="btn-primary header-cta">
-        <span>Стать тестировщиком</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </button>
-    </div>
-  </header>
+  <!-- COOKIE BANNER -->
+  <div class="cookie-banner" id="cookieBanner">
+    <span>Мы используем файлы cookie для улучшения работы сайта.</span>
+    <button class="cookie-accept" id="cookieAccept">Принять</button>
+  </div>
 
   <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="container hero-inner">
-      <div>
-        <div class="hero-badge">
-          <span class="hero-badge-dot"></span>
-          Набираем тестировщиков
-        </div>
-        <h1>Управляйте подрядчиками и&nbsp;документами <span>без хаоса</span></h1>
-        <p class="hero-desc">
-          SnoopDoc&nbsp;&mdash; сервис для видеопродакшенов, студий графики и&nbsp;фрилансеров.
-          Подрядчики, договоры, акты, подписание через СМС&nbsp;&mdash; всё в&nbsp;одном месте, а&nbsp;не&nbsp;в&nbsp;десяти чатах и&nbsp;таблицах.
-        </p>
-        <div class="hero-buttons">
-          <button onclick="openModal()" class="btn-primary">
-            Встать в очередь на тест
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </button>
-          <a href="#features" class="btn-secondary">Узнать больше</a>
-        </div>
-        <p class="hero-note">Бесплатно. Без обязательств. Влияете на продукт.</p>
-      </div>
+  <section class="hero">
+    <div class="hero-content">
+      <a href="#" class="logo-mark" style="margin-bottom:24px">
+        <span class="logo-snoop">Снуп</span><span class="logo-doc">Док</span>
+      </a>
+      <p class="hero-subtitle">Проектные доки без боли</p>
+      <p class="hero-desc">Простой и быстрый сервис для оформления документов с фриланс-командой проекта.</p>
+      <ul class="hero-bullets">
+        <li>
+          <span class="bullet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          Без курьеров и «оставьте на проходной»
+        </li>
+        <li>
+          <span class="bullet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          Без распечаток и таблиц
+        </li>
+        <li>
+          <span class="bullet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          Сфокусируйтесь на проекте — с документами всё ок
+        </li>
+      </ul>
+      <button onclick="openModal()" class="btn-primary hero-cta">
+        Получить ранний доступ
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+      <p class="hero-note">Бесплатно. Попробуйте первыми и поделитесь фидбэком.</p>
+    </div>
 
-      <!-- HERO MOCKUP: Dashboard -->
-      <div class="hero-mockup">
-        <div class="mockup-topbar">
-          <span class="mockup-dot"></span>
-          <span class="mockup-dot"></span>
-          <span class="mockup-dot"></span>
-        </div>
-        <div class="mockup-body">
-          <div class="mockup-sidebar">
-            <div class="mockup-sidebar-logo">
-              <span>SnoopDoc</span>
-            </div>
-            <div class="mockup-nav-item active"><div class="mockup-nav-icon"></div>Обзор</div>
-            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Подрядчики</div>
-            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Проекты</div>
-            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Архив</div>
-            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Шаблоны</div>
-          </div>
-          <div class="mockup-main">
-            <div class="mockup-header-text">Обзор</div>
-            <div class="mockup-header-sub">Добро пожаловать, Анна!</div>
-            <div class="mockup-stats">
-              <div class="mockup-stat-card">
-                <div class="mockup-stat-num">12</div>
-                <div class="mockup-stat-label">Активных проектов</div>
+    <!-- CAROUSEL -->
+    <div class="carousel-section">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="carouselTrack">
+
+          <!-- Slide 1: Dashboard -->
+          <div class="carousel-slide">
+            <div class="slide-topbar"><span class="slide-dot"></span><span class="slide-dot"></span><span class="slide-dot"></span></div>
+            <div class="slide-body">
+              <div class="sc-sidebar">
+                <div class="sc-sidebar-brand"><div class="sc-sidebar-logo"></div><span>Снуп Док</span></div>
+                <div class="sc-nav-item active"><div class="sc-nav-dot"></div>Обзор</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Подрядчики</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Проекты</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Документы</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Шаблоны</div>
               </div>
-              <div class="mockup-stat-card">
-                <div class="mockup-stat-num green">48</div>
-                <div class="mockup-stat-label">Подрядчиков</div>
-              </div>
-              <div class="mockup-stat-card">
-                <div class="mockup-stat-num">156</div>
-                <div class="mockup-stat-label">Документов</div>
-              </div>
-            </div>
-            <div class="mockup-table">
-              <div class="mockup-table-header">
-                <div>Проект</div>
-                <div>Срок сдачи</div>
-                <div>Продюсер</div>
-                <div>Статус</div>
-              </div>
-              <div class="mockup-table-row">
-                <div>
-                  <div class="mockup-project-name">Ролик ВкусВилл</div>
-                  <div class="mockup-project-client">ВкусВилл</div>
+              <div class="sc-main">
+                <div class="sc-header">
+                  <div><div class="sc-title">Обзор</div><div class="sc-title-sub">Добро пожаловать!</div></div>
+                  <div class="sc-add-btn">+ Новый проект</div>
                 </div>
-                <div style="font-size:11px;color:var(--gray-500);">15.03.2026</div>
-                <div style="font-size:11px;color:var(--gray-600);">Анна К.</div>
-                <div><span class="mockup-badge mockup-badge-green">8/8</span></div>
-              </div>
-              <div class="mockup-table-row">
-                <div>
-                  <div class="mockup-project-name">Фильм для Сбера</div>
-                  <div class="mockup-project-client">Сбербанк</div>
+                <div class="sc-stats">
+                  <div class="sc-stat"><div class="sc-stat-num">12</div><div class="sc-stat-label">Активных проектов</div></div>
+                  <div class="sc-stat"><div class="sc-stat-num green">84</div><div class="sc-stat-label">Подписано</div></div>
+                  <div class="sc-stat"><div class="sc-stat-num purple">23</div><div class="sc-stat-label">Ожидает подписания</div></div>
                 </div>
-                <div style="font-size:11px;color:var(--gray-500);">28.03.2026</div>
-                <div style="font-size:11px;color:var(--gray-600);">Михаил Д.</div>
-                <div><span class="mockup-badge mockup-badge-blue">5/12</span></div>
-              </div>
-              <div class="mockup-table-row">
-                <div>
-                  <div class="mockup-project-name">Сериал «Новая жизнь»</div>
-                  <div class="mockup-project-client">Okko</div>
+                <div class="sc-table">
+                  <div class="sc-table-head cols-4"><div>Проект</div><div>Дата сдачи</div><div>Продюсер</div><div>Доки</div></div>
+                  <div class="sc-table-row cols-4">
+                    <div><div class="sc-project">ПИК Серия плюс</div><div class="sc-sub">ПИК</div></div>
+                    <div class="sc-text">15.03.2026</div><div class="sc-text-bright">Анна К.</div>
+                    <div><span class="sc-badge sc-badge-green">8/8</span></div>
+                  </div>
+                  <div class="sc-table-row cols-4">
+                    <div><div class="sc-project">Ролик Яндекс Книги</div><div class="sc-sub">The Clients</div></div>
+                    <div class="sc-text">28.03.2026</div><div class="sc-text-bright">Михаил Д.</div>
+                    <div><span class="sc-badge sc-badge-purple">5/12</span></div>
+                  </div>
+                  <div class="sc-table-row cols-4">
+                    <div><div class="sc-project">Новогодний ролик</div><div class="sc-sub">Самокат</div></div>
+                    <div class="sc-text">10.04.2026</div><div class="sc-text-bright">Елена С.</div>
+                    <div><span class="sc-badge sc-badge-purple">3/9</span></div>
+                  </div>
                 </div>
-                <div style="font-size:11px;color:var(--gray-500);">10.04.2026</div>
-                <div style="font-size:11px;color:var(--gray-600);">Елена С.</div>
-                <div><span class="mockup-badge mockup-badge-blue">3/9</span></div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- PAIN POINTS -->
-  <section class="pain" id="problem">
-    <div class="container">
-      <div class="pain-header">
-        <div class="section-label">Знакомо?</div>
-        <h2 class="section-title">Продакшен без системы — это ежедневный хаос</h2>
-        <p class="section-subtitle">Если хотя бы один пункт про вас — SnoopDocрешает именно эти задачи</p>
-      </div>
-      <div class="pain-grid">
-        <div class="pain-card">
-          <div class="pain-icon">&#128209;</div>
-          <h3>Подрядчики в таблицах и чатах</h3>
-          <p>Реквизиты в Excel, контакты в Telegram, договоры в почте. Найти нужного человека с актуальными данными — квест на 20 минут.</p>
-        </div>
-        <div class="pain-card">
-          <div class="pain-icon">&#128196;</div>
-          <h3>Документы теряются в процессе</h3>
-          <p>Договор отправили на подпись, но он завис. Акт подписан, но где файл — непонятно. Статус документа приходится выяснять в чатах.</p>
-        </div>
-        <div class="pain-card">
-          <div class="pain-icon">&#128260;</div>
-          <h3>Каждый проект — с нуля</h3>
-          <p>Новый проект — заново собирать контакты, оформлять договоры, вспоминать, как звали того монтажёра. Без переиспользования данных.</p>
-        </div>
-        <div class="pain-card">
-          <div class="pain-icon">&#128200;</div>
-          <h3>Нет прозрачности для руководства</h3>
-          <p>Сколько документов подписано? На каком этапе проект? Чтобы узнать статус, нужно написать в пять чатов и подождать час.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="features-header">
-        <div class="section-label">Возможности</div>
-        <h2 class="section-title">Всё, что нужно продакшену,<br>в одном сервисе</h2>
-        <p class="section-subtitle">SnoopDoc закрывает весь цикл: от базы подрядчиков до подписания документов через СМС</p>
-      </div>
-
-      <!-- Feature 1: Contractors -->
-      <div class="feature-block">
-        <div class="feature-text">
-          <h3>База подрядчиков</h3>
-          <p>Все подрядчики с реквизитами, контактами и историей проектов — в одном месте. Больше не нужно искать ИНН в переписке.</p>
-          <ul class="feature-list">
-            <li>ИП, самозанятые, юрлица, физлица — все типы</li>
-            <li>Банковские реквизиты и контакты</li>
-            <li>Ссылка для самостоятельного заполнения данных подрядчиком</li>
-            <li>Связь подрядчика со всеми проектами</li>
-          </ul>
-        </div>
-        <div class="feature-mockup">
-          <div class="mockup-topbar">
-            <span class="mockup-dot"></span>
-            <span class="mockup-dot"></span>
-            <span class="mockup-dot"></span>
-          </div>
-          <div class="fm-content">
-            <div class="fm-title">База подрядчиков</div>
-            <div class="fm-contractor-list">
-              <div class="fm-contractor">
-                <div class="fm-avatar">ЛА</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">Лаврикова Алёна Романовна</div>
-                  <div class="fm-contractor-role">Режиссёр, монтажёр</div>
-                </div>
-                <span class="fm-contractor-type fm-type-sz">СЗ</span>
+          <!-- Slide 2: Contractors -->
+          <div class="carousel-slide">
+            <div class="slide-topbar"><span class="slide-dot"></span><span class="slide-dot"></span><span class="slide-dot"></span></div>
+            <div class="slide-body">
+              <div class="sc-sidebar">
+                <div class="sc-sidebar-brand"><div class="sc-sidebar-logo"></div><span>Снуп Док</span></div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Обзор</div>
+                <div class="sc-nav-item active"><div class="sc-nav-dot"></div>Подрядчики</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Проекты</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Документы</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Шаблоны</div>
               </div>
-              <div class="fm-contractor">
-                <div class="fm-avatar" style="background:var(--green-700);">СИ</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">Ситдиков Илья Русланович</div>
-                  <div class="fm-contractor-role">Оператор-постановщик</div>
+              <div class="sc-main">
+                <div class="sc-header">
+                  <div><div class="sc-title">Подрядчики</div><div class="sc-title-sub">48 подрядчиков в базе</div></div>
+                  <div class="sc-add-btn">+ Добавить</div>
                 </div>
-                <span class="fm-contractor-type fm-type-ip">ИП</span>
-              </div>
-              <div class="fm-contractor">
-                <div class="fm-avatar" style="background:#4ade80;">КМ</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">Киселев Максим Витальевич</div>
-                  <div class="fm-contractor-role">Колорист</div>
-                </div>
-                <span class="fm-contractor-type fm-type-sz">СЗ</span>
-              </div>
-              <div class="fm-contractor">
-                <div class="fm-avatar" style="background:var(--green-800);">ПР</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">ООО «Продакшен Групп»</div>
-                  <div class="fm-contractor-role">VFX-студия</div>
-                </div>
-                <span class="fm-contractor-type fm-type-ul">ЮЛ</span>
+                <div class="sc-contractor"><div class="sc-avatar">ЛА</div><div class="sc-contractor-info"><div class="sc-contractor-name">СЗ Лаврикова А.Р.</div><div class="sc-contractor-role">Режиссёр, монтажёр</div></div><span class="sc-type-badge sc-type-sz">СЗ</span></div>
+                <div class="sc-contractor"><div class="sc-avatar" style="background:var(--blue-600)">СИ</div><div class="sc-contractor-info"><div class="sc-contractor-name">ИП Ситдиков И.Р.</div><div class="sc-contractor-role">Оператор-постановщик</div></div><span class="sc-type-badge sc-type-ip">ИП</span></div>
+                <div class="sc-contractor"><div class="sc-avatar" style="background:var(--blue-400)">КМ</div><div class="sc-contractor-info"><div class="sc-contractor-name">ИП Киселев М.В.</div><div class="sc-contractor-role">Колорист</div></div><span class="sc-type-badge sc-type-ip">ИП</span></div>
+                <div class="sc-contractor"><div class="sc-avatar" style="background:var(--blue-800)">ПГ</div><div class="sc-contractor-info"><div class="sc-contractor-name">ООО «Продакшен Групп»</div><div class="sc-contractor-role">VFX-студия</div></div><span class="sc-type-badge sc-type-ul">ООО</span></div>
+                <div class="sc-contractor"><div class="sc-avatar" style="background:var(--purple-500)">ПД</div><div class="sc-contractor-info"><div class="sc-contractor-name">СЗ Петров Д.А.</div><div class="sc-contractor-role">Звукорежиссёр</div></div><span class="sc-type-badge sc-type-sz">СЗ</span></div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Feature 2: Documents + SMS signing -->
-      <div class="feature-block reverse">
-        <div class="feature-text">
-          <h3>Документы и подписание через СМС</h3>
-          <p>Все договоры и акты подписываются через СМС прямо в сервисе. Шаблоны документов разработаны совместно с юристом — вам не нужно ничего составлять с нуля.</p>
-          <ul class="feature-list">
-            <li>Подписание документов через СМС — быстро и юридически значимо</li>
-            <li>Готовые юридические шаблоны, разработанные с юристом</li>
-            <li>Отслеживание статуса: создан, на подписи, подписан</li>
-            <li>Автоматические уведомления о просроченных документах</li>
-          </ul>
-        </div>
-        <div class="feature-mockup">
-          <div class="mockup-topbar">
-            <span class="mockup-dot"></span>
-            <span class="mockup-dot"></span>
-            <span class="mockup-dot"></span>
-          </div>
-          <div class="fm-content">
-            <div class="fm-title">Документы проекта «Ролик ВкусВилл»</div>
-            <div class="fm-doc-flow">
-              <div class="fm-doc-header">
-                <div>Подрядчик / Роль</div>
-                <div>Договор</div>
-                <div>Акт</div>
+          <!-- Slide 3: Documents -->
+          <div class="carousel-slide">
+            <div class="slide-topbar"><span class="slide-dot"></span><span class="slide-dot"></span><span class="slide-dot"></span></div>
+            <div class="slide-body">
+              <div class="sc-sidebar">
+                <div class="sc-sidebar-brand"><div class="sc-sidebar-logo"></div><span>Снуп Док</span></div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Обзор</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Подрядчики</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Проекты</div>
+                <div class="sc-nav-item active"><div class="sc-nav-dot"></div>Документы</div>
+                <div class="sc-nav-item"><div class="sc-nav-dot"></div>Шаблоны</div>
               </div>
-              <div class="fm-doc-row">
-                <div>
-                  <div class="fm-doc-label">Лаврикова А.Р.</div>
-                  <div class="fm-doc-sub">Режиссёр</div>
+              <div class="sc-main">
+                <div class="sc-header">
+                  <div><div class="sc-title">Документы</div><div class="sc-title-sub">Проект «Ролик ВкусВилл»</div></div>
                 </div>
-                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
-                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
-              </div>
-              <div class="fm-doc-row">
-                <div>
-                  <div class="fm-doc-label">Ситдиков И.Р.</div>
-                  <div class="fm-doc-sub">Оператор</div>
+                <div class="sc-table">
+                  <div class="sc-table-head cols-3"><div>Подрядчик</div><div>Договор</div><div>Акт</div></div>
+                  <div class="sc-table-row cols-3">
+                    <div><div class="sc-project">СЗ Лаврикова А.Р.</div><div class="sc-sub">Режиссёр</div></div>
+                    <div><span class="sc-badge sc-badge-green">Подписан</span></div>
+                    <div><span class="sc-badge sc-badge-green">Подписан</span></div>
+                  </div>
+                  <div class="sc-table-row cols-3">
+                    <div><div class="sc-project">ИП Ситдиков И.Р.</div><div class="sc-sub">Оператор</div></div>
+                    <div><span class="sc-badge sc-badge-green">Подписан</span></div>
+                    <div><span class="sc-badge sc-badge-yellow">На подписи</span></div>
+                  </div>
+                  <div class="sc-table-row cols-3">
+                    <div><div class="sc-project">ИП Киселев М.В.</div><div class="sc-sub">Колорист</div></div>
+                    <div><span class="sc-badge sc-badge-yellow">На подписи</span></div>
+                    <div><span class="sc-badge sc-badge-dim">Создан</span></div>
+                  </div>
+                  <div class="sc-table-row cols-3">
+                    <div><div class="sc-project">СЗ Петров Д.А.</div><div class="sc-sub">Звукорежиссёр</div></div>
+                    <div><span class="sc-badge sc-badge-green">Подписан</span></div>
+                    <div><span class="sc-badge sc-badge-green">Подписан</span></div>
+                  </div>
                 </div>
-                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
-                <div><span class="fm-doc-status fm-status-progress">На подписи</span></div>
-              </div>
-              <div class="fm-doc-row">
-                <div>
-                  <div class="fm-doc-label">Киселев М.В.</div>
-                  <div class="fm-doc-sub">Колорист</div>
-                </div>
-                <div><span class="fm-doc-status fm-status-progress">На подписи</span></div>
-                <div><span class="fm-doc-status" style="background:rgba(255,255,255,0.06);color:var(--gray-500);">Создан</span></div>
-              </div>
-              <div class="fm-doc-row">
-                <div>
-                  <div class="fm-doc-label">Петров Д.А.</div>
-                  <div class="fm-doc-sub">Звукорежиссёр</div>
-                </div>
-                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
-                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Feature 3: Projects -->
-      <div class="feature-block">
-        <div class="feature-text">
-          <h3>Проекты и роли</h3>
-          <p>Создавайте проекты, назначайте роли, привязывайте подрядчиков. Вся команда проекта — перед глазами, от режиссёра до гафера.</p>
-          <ul class="feature-list">
-            <li>25+ готовых ролей для видеопродакшена</li>
-            <li>Назначение подрядчика на роль в 2 клика</li>
-            <li>Продюсер и ассистент привязаны к проекту</li>
-            <li>Дашборды для руководства с KPI</li>
-          </ul>
-        </div>
-        <div class="feature-mockup">
-          <div class="mockup-topbar">
-            <span class="mockup-dot"></span>
-            <span class="mockup-dot"></span>
-            <span class="mockup-dot"></span>
-          </div>
-          <div class="fm-content">
-            <div class="fm-title">Команда проекта</div>
-            <div class="fm-contractor-list">
-              <div class="fm-contractor" style="border-left: 3px solid var(--green-500);">
-                <div class="fm-avatar">ЛА</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">Лаврикова А.Р.</div>
-                  <div class="fm-contractor-role">Режиссёр</div>
-                </div>
-                <span class="fm-doc-status fm-status-signed" style="font-size:11px;">2/2 док.</span>
-              </div>
-              <div class="fm-contractor" style="border-left: 3px solid var(--green-500);">
-                <div class="fm-avatar" style="background:var(--green-700);">СИ</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">Ситдиков И.Р.</div>
-                  <div class="fm-contractor-role">Оператор-постановщик</div>
-                </div>
-                <span class="fm-doc-status fm-status-progress" style="font-size:11px;">1/2 док.</span>
-              </div>
-              <div class="fm-contractor" style="border-left: 3px solid #fbbf24;">
-                <div class="fm-avatar" style="background:#4ade80;">КМ</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">Киселев М.В.</div>
-                  <div class="fm-contractor-role">Колорист</div>
-                </div>
-                <span class="fm-doc-status fm-status-wait" style="font-size:11px;">0/2 док.</span>
-              </div>
-              <div class="fm-contractor" style="border-left: 3px solid var(--green-500);">
-                <div class="fm-avatar" style="background:var(--green-800);">ПД</div>
-                <div class="fm-contractor-info">
-                  <div class="fm-contractor-name">Петров Д.А.</div>
-                  <div class="fm-contractor-role">Звукорежиссёр</div>
-                </div>
-                <span class="fm-doc-status fm-status-signed" style="font-size:11px;">2/2 док.</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="how" id="how">
-    <div class="container">
-      <div class="how-header">
-        <div class="section-label">Как это работает</div>
-        <h2 class="section-title">4 шага до тестирования</h2>
-        <p class="section-subtitle">Запуск занимает минимум времени. Мы берём на себя онбординг и поддержку</p>
-      </div>
-      <div class="how-steps">
-        <div class="how-step">
-          <div class="how-step-num">1</div>
-          <h3>Заполните анкету</h3>
-          <p>Расскажите о вашей студии или фриланс-практике. Это займёт 2 минуты</p>
-          <span class="how-step-arrow">&#8594;</span>
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="prevBtn" aria-label="Назад">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div class="carousel-dots" id="carouselDots">
+          <button class="carousel-dot active" data-index="0"></button>
+          <button class="carousel-dot" data-index="1"></button>
+          <button class="carousel-dot" data-index="2"></button>
         </div>
-        <div class="how-step">
-          <div class="how-step-num">2</div>
-          <h3>Мы свяжемся</h3>
-          <p>Обсудим ваши задачи и настроим сервис под ваш рабочий процесс</p>
-          <span class="how-step-arrow">&#8594;</span>
-        </div>
-        <div class="how-step">
-          <div class="how-step-num">3</div>
-          <h3>Тестируете</h3>
-          <p>Работаете с SnoopDoc на реальных проектах. Мы рядом и помогаем</p>
-          <span class="how-step-arrow">&#8594;</span>
-        </div>
-        <div class="how-step">
-          <div class="how-step-num">4</div>
-          <h3>Влияете на продукт</h3>
-          <p>Ваш фидбек напрямую формирует функции сервиса. Тестировщики получат лучшие условия</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AUDIENCE -->
-  <section class="audience" id="audience">
-    <div class="container">
-      <div class="audience-header">
-        <div class="section-label">Для кого</div>
-        <h2 class="section-title">SnoopDoc создан для тех,<br>кто работает с подрядчиками</h2>
-        <p class="section-subtitle">Если у вас больше 5 подрядчиков на проект — вам точно нужна система</p>
-      </div>
-      <div class="audience-grid">
-        <div class="audience-card">
-          <div class="audience-icon">&#127909;</div>
-          <h3>Видеопродакшены</h3>
-          <p>Студии, которые снимают рекламу, клипы, корпоративное видео</p>
-          <ul>
-            <li>10+ подрядчиков на проект</li>
-            <li>Договоры и акты на каждого</li>
-            <li>Несколько проектов одновременно</li>
-            <li>Продюсеры, ассистенты, руководство</li>
-          </ul>
-        </div>
-        <div class="audience-card">
-          <div class="audience-icon">&#127912;</div>
-          <h3>Студии графики</h3>
-          <p>Постпродакшен, VFX, моушен-дизайн, анимация</p>
-          <ul>
-            <li>Фрилансеры на разовых задачах</li>
-            <li>Разные типы оформления (ИП, СЗ)</li>
-            <li>Постоянная ротация команды</li>
-            <li>Нужна история по подрядчикам</li>
-          </ul>
-        </div>
-        <div class="audience-card">
-          <div class="audience-icon">&#128187;</div>
-          <h3>Фрилансеры</h3>
-          <p>Продюсеры и режиссёры, работающие с брендами напрямую</p>
-          <ul>
-            <li>Собираете команду под каждый проект</li>
-            <li>Сами ведёте документы</li>
-            <li>Нужен порядок в документах</li>
-            <li>Хотите выглядеть профессионально</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="faq" id="faq">
-    <div class="container">
-      <div class="faq-header">
-        <div class="section-label">Вопросы</div>
-        <h2 class="section-title">Частые вопросы</h2>
-        <p class="section-subtitle">Если не нашли ответ — спросите в анкете, мы ответим лично</p>
-      </div>
-      <div class="faq-list">
-        <div class="faq-item open">
-          <button class="faq-question">
-            Сколько стоит тестирование?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Тестирование полностью бесплатно. Мы запускаем продукт и ищем первых пользователей, которые помогут довести его до идеала. Взамен вы получите лучшие условия после запуска.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Как долго длится тестирование?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Тестовый период — от 2 до 4 недель. Этого достаточно, чтобы попробовать SnoopDoc на реальном проекте и понять, подходит ли он вам.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Нужны ли технические навыки?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Нет. SnoopDoc — это веб-приложение с простым интерфейсом. Если вы пользуетесь Google Docs или Notion, с SnoopDoc разберётесь за 10 минут. Плюс мы поможем с онбордингом.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Мои данные будут в безопасности?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Да. Все данные хранятся на защищённых серверах. При необходимости подпишем NDA. Вы можете удалить свои данные в любой момент.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Что я получу как тестировщик?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Бесплатный доступ к сервису, персональный онбординг, приоритетную поддержку и специальные условия после запуска. Ваш фидбек будет напрямую влиять на развитие продукта.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question">
-            Когда начнётся тестирование?
-            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-          <div class="faq-answer">
-            <p>Мы формируем группу тестировщиков прямо сейчас. Чем раньше заполните анкету — тем быстрее получите доступ. Первые приглашения рассылаем по мере готовности.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA SECTION -->
-  <section class="cta-section" id="cta">
-    <div class="container">
-      <div class="section-label" style="background:rgba(22,163,74,0.15);color:#4ade80;">Присоединяйтесь</div>
-      <h2 class="section-title">Готовы навести порядок<br>в документообороте?</h2>
-      <p>Заполните короткую анкету и встаньте в очередь на тестирование. Это займёт 2 минуты.</p>
-      <div class="cta-buttons">
-        <button onclick="openModal()" class="btn-primary" style="padding:18px 40px;font-size:18px;">
-          Заполнить анкету тестировщика
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        <span class="carousel-label" id="carouselLabel">Дашборд</span>
+        <button class="carousel-btn" id="nextBtn" aria-label="Вперёд">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
-      <p class="cta-note">Бесплатно. Никакого спама. Выйти можно в любой момент.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
-      <a href="#" class="footer-logo">
-        <span>SnoopDoc</span>
-      </a>
-      <div class="footer-copy">&copy; 2026 SnoopDoc. Документооборот для продакшена.</div>
+      <div class="footer-copy">&copy; 2026 Снуп Док</div>
     </div>
   </footer>
 
@@ -1571,109 +954,73 @@
       <button class="modal-close" onclick="closeModal()" aria-label="Закрыть">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
-
       <div id="modalForm">
         <div class="modal-header">
-          <h2 class="modal-title">Анкета тестировщика <span>SnoopDoc</span></h2>
-          <p class="modal-desc">Анкета занимает пару минут.</p>
+          <h2 class="modal-title">Ранний доступ к <span class="mt-snoop">Снуп</span> <span class="mt-doc">Док</span></h2>
+          <p class="modal-desc">Попробуйте продукт первыми и помогите сделать его лучше — ваш фидбэк будет напрямую влиять на развитие сервиса.</p>
+          <div class="modal-early">Бесплатно на время бета-теста</div>
         </div>
-
         <form id="questionnaireForm" novalidate>
-          <div class="modal-field" id="field-name">
-            <label for="userName">Как тебя зовут?<span class="req">*</span></label>
-            <input type="text" id="userName" placeholder="Имя и фамилия">
-            <div class="field-error">Заполните это поле</div>
-          </div>
-
-          <div class="modal-field" id="field-telegram">
-            <label for="telegram">Telegram для связи<span class="req">*</span></label>
-            <input type="text" id="telegram" placeholder="@username">
-            <div class="field-error">Заполните это поле</div>
-          </div>
-
-          <div class="modal-field" id="field-company">
-            <label for="company">Какую компанию ты представляешь?<span class="req">*</span></label>
-            <input type="text" id="company" placeholder="Название компании">
-            <div class="field-error">Заполните это поле</div>
-          </div>
-
-          <div class="modal-field" id="field-website">
-            <label for="website">Сайт компании</label>
-            <input type="text" id="website" placeholder="https://">
-          </div>
-
-          <div class="modal-field" id="field-company-type">
-            <label for="companyType">Вид компании<span class="req">*</span></label>
-            <select id="companyType">
-              <option value="" disabled selected>Выберите</option>
-              <option value="Видеопродакшен">Видеопродакшен</option>
-              <option value="Студия графики / VFX / моушен">Студия графики / VFX / моушен</option>
-              <option value="Продакшен полного цикла">Продакшен полного цикла</option>
-              <option value="Фриланс">Фриланс</option>
-              <option value="Другое">Другое</option>
-            </select>
-            <div class="field-error">Выберите вид компании</div>
-          </div>
-
-          <div class="modal-field" id="field-process">
-            <label for="process">Опиши текущий процесс: как вы обычно создаёте, согласуете и подписываете договоры</label>
-            <textarea id="process" rows="3" placeholder="Не обязательно, но поможет нам настроить SnoopDoc под вас"></textarea>
-          </div>
-
-          <div class="modal-field" id="field-contracts">
-            <label for="contracts">Сколько нужно оформлять договоров с подрядчиками в месяц примерно?<span class="req">*</span></label>
-            <input type="text" id="contracts" placeholder="Например, 10–15">
-            <div class="field-error">Заполните это поле</div>
-          </div>
-
-          <div class="modal-field" id="field-automation">
-            <label for="automation">Был ли опыт автоматизации документооборота?<span class="req">*</span></label>
-            <input type="text" id="automation" placeholder="Расскажите кратко">
-            <div class="field-error">Заполните это поле</div>
-          </div>
-
-          <button type="submit" class="modal-submit" id="submitBtn">Отправить анкету</button>
+          <div class="modal-field" id="field-name"><label for="userName">Как тебя зовут?<span class="req">*</span></label><input type="text" id="userName" placeholder="Имя и фамилия"><div class="field-error">Заполните это поле</div></div>
+          <div class="modal-field" id="field-telegram"><label for="telegram">Telegram для связи<span class="req">*</span></label><input type="text" id="telegram" placeholder="@username"><div class="field-error">Заполните это поле</div></div>
+          <div class="modal-field" id="field-company"><label for="company">Какую компанию ты представляешь?<span class="req">*</span></label><input type="text" id="company" placeholder="Название компании"><div class="field-error">Заполните это поле</div></div>
+          <div class="modal-field" id="field-website"><label for="website">Сайт компании</label><input type="text" id="website" placeholder="https://"></div>
+          <div class="modal-field" id="field-company-type"><label for="companyType">Вид компании<span class="req">*</span></label><select id="companyType"><option value="" disabled selected>Выберите</option><option value="Видеопродакшен">Видеопродакшен</option><option value="Студия графики / VFX / моушен">Студия графики / VFX / моушен</option><option value="Продакшен полного цикла">Продакшен полного цикла</option><option value="Фриланс">Фриланс</option><option value="Другое">Другое</option></select><div class="field-error">Выберите вид компании</div></div>
+          <div class="modal-field" id="field-process"><label for="process">Опиши текущий процесс: как вы обычно создаёте, согласуете и подписываете договоры</label><textarea id="process" rows="3" placeholder="Не обязательно, но поможет нам настроить Снуп Док под вас"></textarea></div>
+          <div class="modal-field" id="field-contracts"><label for="contracts">Сколько нужно оформлять договоров с подрядчиками в месяц примерно?<span class="req">*</span></label><input type="text" id="contracts" placeholder="Например, 10-15"><div class="field-error">Заполните это поле</div></div>
+          <div class="modal-field" id="field-automation"><label for="automation">Был ли опыт автоматизации документооборота?<span class="req">*</span></label><input type="text" id="automation" placeholder="Расскажите кратко"><div class="field-error">Заполните это поле</div></div>
+          <p class="modal-consent">Нажимая кнопку, вы соглашаетесь с <a href="privacy.html" target="_blank">политикой обработки персональных данных</a></p>
+          <button type="submit" class="modal-submit" id="submitBtn">Получить ранний доступ</button>
         </form>
       </div>
-
       <div class="modal-success" id="modalSuccess">
-        <div class="modal-success-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        </div>
-        <h3>Спасибо!</h3>
-        <p>Мы получили вашу анкету и скоро свяжемся с вами.</p>
+        <div class="modal-success-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3>Вы в списке!</h3>
+        <p>Мы свяжемся с вами в Telegram и дадим доступ к бета-версии.</p>
       </div>
     </div>
   </div>
 
   <script>
-    // ===== Supabase config =====
+    // ===== Supabase =====
     const SUPABASE_URL = 'https://fqncyjknqqawianlxorq.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_UnLUSzwWw7Vchp6m-dIgMQ_hLQqq6G0';
 
-    // ===== Header scroll effect =====
-    const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 20);
+    // ===== Cookie banner =====
+    const cookieBanner = document.getElementById('cookieBanner');
+    if (localStorage.getItem('cookiesAccepted')) {
+      cookieBanner.classList.add('hidden');
+    }
+    document.getElementById('cookieAccept').addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', '1');
+      cookieBanner.classList.add('hidden');
     });
 
-    // ===== FAQ accordion =====
-    document.querySelectorAll('.faq-question').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const item = btn.parentElement;
-        const wasOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-        if (!wasOpen) item.classList.add('open');
-      });
-    });
+    // ===== Carousel =====
+    const track = document.getElementById('carouselTrack');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const label = document.getElementById('carouselLabel');
+    const labels = ['Дашборд', 'Подрядчики', 'Документы'];
+    let current = 1;
+    const total = 3;
 
-    // ===== Smooth scroll for anchor links =====
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        e.preventDefault();
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+    function goTo(i) {
+      current = (i + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+      label.textContent = labels[current];
+    }
+
+    goTo(1);
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.index)));
+
+    // Auto-advance every 5s
+    let autoplay = setInterval(() => goTo(current + 1), 5000);
+    document.querySelector('.carousel-section').addEventListener('mouseenter', () => clearInterval(autoplay));
+    document.querySelector('.carousel-section').addEventListener('mouseleave', () => {
+      autoplay = setInterval(() => goTo(current + 1), 5000);
     });
 
     // ===== Modal =====
@@ -1687,11 +1034,9 @@
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
-
     function closeModal() {
       modal.classList.remove('active');
       document.body.style.overflow = '';
-      // Reset after close animation
       setTimeout(() => {
         form.reset();
         modalForm.style.display = '';
@@ -1699,21 +1044,11 @@
         document.querySelectorAll('.modal-field').forEach(f => f.classList.remove('error'));
       }, 300);
     }
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
 
-    // Close on overlay click
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-    });
-
-    // Form submit
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
-
       const fields = {
         name: document.getElementById('userName').value.trim(),
         telegram: document.getElementById('telegram').value.trim(),
@@ -1724,65 +1059,25 @@
         contracts: document.getElementById('contracts').value.trim(),
         automation: document.getElementById('automation').value.trim(),
       };
-
-      // Validate required fields
-      const required = [
-        ['name', 'field-name'],
-        ['telegram', 'field-telegram'],
-        ['company', 'field-company'],
-        ['companyType', 'field-company-type'],
-        ['contracts', 'field-contracts'],
-        ['automation', 'field-automation'],
-      ];
-
+      const required = [['name','field-name'],['telegram','field-telegram'],['company','field-company'],['companyType','field-company-type'],['contracts','field-contracts'],['automation','field-automation']];
       let valid = true;
       document.querySelectorAll('.modal-field').forEach(f => f.classList.remove('error'));
-
-      for (const [key, id] of required) {
-        if (!fields[key]) {
-          document.getElementById(id).classList.add('error');
-          valid = false;
-        }
-      }
-
+      for (const [key, id] of required) { if (!fields[key]) { document.getElementById(id).classList.add('error'); valid = false; } }
       if (!valid) return;
 
-      // Loading state
       submitBtn.disabled = true;
       submitBtn.textContent = 'Отправка...';
-
       try {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/questionnaire_responses`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
-            name: fields.name,
-            telegram: fields.telegram,
-            company: fields.company,
-            company_website: fields.website || null,
-            company_type: fields.companyType,
-            current_process: fields.process || null,
-            contracts_per_month: fields.contracts,
-            automation_experience: fields.automation
-          })
+          headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ name: fields.name, telegram: fields.telegram, company: fields.company, company_website: fields.website || null, company_type: fields.companyType, current_process: fields.process || null, contracts_per_month: fields.contracts, automation_experience: fields.automation })
         });
-
-        if (!res.ok) throw new Error('Ошибка сервера');
-
-        // Show success
+        if (!res.ok) throw new Error();
         modalForm.style.display = 'none';
         modalSuccess.classList.add('active');
-      } catch (err) {
-        alert('Не удалось отправить анкету. Попробуйте позже.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Отправить';
-      }
+      } catch { alert('Не удалось отправить. Попробуйте позже.'); }
+      finally { submitBtn.disabled = false; submitBtn.textContent = 'Получить ранний доступ'; }
     });
   </script>
 </body>
