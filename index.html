@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnoopDoc — документооборот для видеопродакшена</title>
+  <meta name="description" content="SnoopDoc — сервис управления подрядчиками и документами для видеопродакшенов, студий графики и фрилансеров. Станьте тестировщиком.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green-50: #f0fdf4;
+      --green-100: #dcfce7;
+      --green-200: #bbf7d0;
+      --green-400: #4ade80;
+      --green-500: #22c55e;
+      --green-600: #16a34a;
+      --green-700: #15803d;
+      --green-800: #166534;
+      --green-900: #14532d;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --blue-100: #dbeafe;
+      --blue-700: #1d4ed8;
+      --purple-100: #f3e8ff;
+      --purple-700: #7c3aed;
+      --orange-100: #ffedd5;
+      --orange-700: #c2410c;
+      --yellow-100: #fef9c3;
+      --yellow-700: #a16207;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--gray-900);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ===== UTILITIES ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: var(--green-600);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: var(--green-700); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--green-600);
+      font-size: 16px;
+      font-weight: 600;
+      border: 2px solid var(--green-600);
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: var(--green-50); }
+
+    .section-label {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--green-50);
+      color: var(--green-700);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--gray-900);
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--gray-500);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gray-100);
+      transition: box-shadow 0.3s;
+    }
+    .header.scrolled { box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--gray-900);
+    }
+    .logo-text { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+    .logo-sub { font-size: 11px; color: var(--gray-400); font-weight: 500; margin-top: -2px; }
+
+    .header-cta {
+      padding: 10px 24px;
+      font-size: 14px;
+      border-radius: 10px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 140px 0 80px;
+      background: linear-gradient(180deg, #fff 0%, var(--green-50) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 100px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(22, 163, 74, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--green-100);
+      color: var(--green-800);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green-500);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--green-600); }
+    .hero-desc {
+      font-size: 18px;
+      color: var(--gray-600);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 520px;
+    }
+    .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-note {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+
+    /* Hero Mockup */
+    .hero-mockup {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+      position: relative;
+    }
+    .mockup-topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .mockup-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gray-300);
+    }
+    .mockup-dot:first-child { background: #ff5f57; }
+    .mockup-dot:nth-child(2) { background: #ffbd2e; }
+    .mockup-dot:nth-child(3) { background: #28c840; }
+
+    .mockup-body {
+      display: flex;
+      min-height: 340px;
+    }
+
+    /* Mockup Sidebar */
+    .mockup-sidebar {
+      width: 180px;
+      background: #fff;
+      border-right: 1px solid var(--gray-200);
+      padding: 16px 12px;
+      flex-shrink: 0;
+    }
+    .mockup-sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .mockup-sidebar-logo span { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .mockup-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-bottom: 2px;
+    }
+    .mockup-nav-item.active {
+      background: var(--green-50);
+      color: var(--green-700);
+      font-weight: 600;
+    }
+    .mockup-nav-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--gray-200);
+      flex-shrink: 0;
+    }
+    .mockup-nav-item.active .mockup-nav-icon { background: var(--green-200); }
+
+    /* Mockup Main Content */
+    .mockup-main {
+      flex: 1;
+      min-width: 0;
+      padding: 20px;
+      background: var(--gray-50);
+      overflow: hidden;
+    }
+    .mockup-header-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 4px;
+    }
+    .mockup-header-sub {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+    }
+
+    /* Stat Cards */
+    .mockup-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .mockup-stat-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .mockup-stat-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1;
+    }
+    .mockup-stat-num.green { color: var(--green-600); }
+    .mockup-stat-label {
+      font-size: 10px;
+      color: var(--gray-400);
+      margin-top: 4px;
+    }
+
+    /* Mockup Table */
+    .mockup-table {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .mockup-table-header {
+      display: grid;
+      grid-template-columns: 3fr 2fr 2fr 1fr;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      font-size: 10px;
+      color: var(--gray-400);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .mockup-table-row {
+      display: grid;
+      grid-template-columns: 3fr 2fr 2fr 1fr;
+      gap: 6px;
+      padding: 10px 14px;
+      font-size: 11px;
+      border-bottom: 1px solid var(--gray-100);
+      align-items: center;
+    }
+    .mockup-table-row > div { min-width: 0; overflow: hidden; }
+    .mockup-table-row:last-child { border-bottom: none; }
+    .mockup-project-name { font-weight: 600; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mockup-project-client { font-size: 10px; color: var(--gray-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mockup-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .mockup-badge-green { background: var(--green-100); color: var(--green-700); }
+    .mockup-badge-blue { background: var(--blue-100); color: var(--blue-700); }
+
+    /* ===== PAIN SECTION ===== */
+    .pain {
+      padding: 100px 0;
+      background: var(--gray-900);
+      position: relative;
+      overflow: hidden;
+    }
+    .pain::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .pain-header { text-align: center; margin-bottom: 60px; }
+    .pain-header .section-title { color: #fff; }
+    .pain-header .section-subtitle { margin: 0 auto; color: var(--gray-400); }
+    .pain-header .section-label { background: rgba(239, 68, 68, 0.1); color: #f87171; }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .pain-card {
+      padding: 28px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      transition: all 0.25s;
+      position: relative;
+    }
+    .pain-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 16px 16px 0 0;
+      background: linear-gradient(90deg, #ef4444, #f97316);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .pain-card:hover { border-color: rgba(239, 68, 68, 0.2); background: rgba(255,255,255,0.05); }
+    .pain-card:hover::before { opacity: 1; }
+    .pain-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(239, 68, 68, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+    .pain-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .pain-card p {
+      font-size: 14px;
+      color: var(--gray-400);
+      line-height: 1.6;
+    }
+
+    /* ===== FEATURES / PRODUCT ===== */
+    .features {
+      padding: 100px 0;
+      background: var(--gray-900);
+      color: #fff;
+    }
+    .features .section-label { background: rgba(22, 163, 74, 0.15); color: var(--green-400); }
+    .features .section-title { color: #fff; }
+    .features .section-subtitle { color: var(--gray-400); }
+    .features-header { text-align: center; margin-bottom: 60px; }
+
+    .feature-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+    .feature-block:last-child { margin-bottom: 0; }
+    .feature-block.reverse { direction: rtl; }
+    .feature-block.reverse > * { direction: ltr; }
+
+    .feature-text h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .feature-text p {
+      font-size: 15px;
+      color: var(--gray-400);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .feature-list {
+      list-style: none;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--gray-300);
+      margin-bottom: 10px;
+    }
+    .feature-list li::before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border-radius: 50%;
+      background: var(--green-600);
+      margin-top: 1px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 12px;
+    }
+
+    /* Feature Mockups (dark variant) */
+    .feature-mockup {
+      background: var(--gray-800);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .feature-mockup .mockup-topbar {
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .feature-mockup .mockup-dot { background: rgba(255,255,255,0.15); }
+    .feature-mockup .mockup-dot:first-child { background: #ff5f57; }
+    .feature-mockup .mockup-dot:nth-child(2) { background: #ffbd2e; }
+    .feature-mockup .mockup-dot:nth-child(3) { background: #28c840; }
+
+    .fm-content { padding: 20px; }
+    .fm-title { font-size: 13px; font-weight: 600; color: var(--gray-300); margin-bottom: 12px; }
+
+    /* Contractors mockup */
+    .fm-contractor-list { display: flex; flex-direction: column; gap: 8px; }
+    .fm-contractor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .fm-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--green-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .fm-contractor-info { flex: 1; min-width: 0; overflow: hidden; }
+    .fm-contractor-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fm-contractor-role { font-size: 11px; color: var(--gray-400); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fm-contractor-type {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .fm-type-sz { background: rgba(22, 163, 74, 0.15); color: var(--green-400); }
+    .fm-type-ip { background: rgba(124, 58, 237, 0.15); color: #c084fc; }
+    .fm-type-ul { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+
+    /* Document flow mockup */
+    .fm-doc-flow { display: flex; flex-direction: column; gap: 10px; }
+    .fm-doc-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .fm-doc-label { font-size: 12px; color: #fff; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fm-doc-sub { font-size: 10px; color: var(--gray-500); white-space: nowrap; }
+    .fm-doc-status {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .fm-status-signed { background: rgba(22, 163, 74, 0.15); color: var(--green-400); }
+    .fm-status-progress { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+    .fm-status-wait { background: rgba(234, 179, 8, 0.15); color: #fbbf24; }
+
+    .fm-doc-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 8px;
+      padding: 0 12px 8px;
+      font-size: 10px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how {
+      padding: 100px 0;
+      background: #fff;
+    }
+    .how-header { text-align: center; margin-bottom: 60px; }
+    .how-header .section-subtitle { margin: 0 auto; }
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .how-step {
+      text-align: center;
+      padding: 32px 20px;
+      border-radius: 16px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      position: relative;
+    }
+    .how-step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--green-600);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .how-step h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--gray-900);
+    }
+    .how-step p {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+    .how-step-arrow {
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-300);
+      font-size: 20px;
+      z-index: 1;
+    }
+
+    /* ===== AUDIENCE ===== */
+    .audience {
+      padding: 100px 0;
+      background: var(--green-50);
+    }
+    .audience-header { text-align: center; margin-bottom: 60px; }
+    .audience-header .section-subtitle { margin: 0 auto; }
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .audience-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 28px;
+      border: 1px solid var(--gray-200);
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .audience-card:hover { border-color: var(--green-300); box-shadow: 0 8px 24px rgba(22, 163, 74, 0.08); }
+    .audience-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+    }
+    .audience-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--gray-900);
+    }
+    .audience-card p {
+      font-size: 14px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+    .audience-card ul {
+      list-style: none;
+      margin-top: 16px;
+      text-align: left;
+    }
+    .audience-card ul li {
+      font-size: 13px;
+      color: var(--gray-600);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .audience-card ul li:last-child { border-bottom: none; }
+    .audience-card ul li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--green-500);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ===== FAQ ===== */
+    .faq {
+      padding: 100px 0;
+      background: #fff;
+    }
+    .faq-header { text-align: center; margin-bottom: 60px; }
+    .faq-header .section-subtitle { margin: 0 auto; }
+    .faq-list {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 20px 0;
+      background: none;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gray-900);
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+    }
+    .faq-question:hover { color: var(--green-600); }
+    .faq-chevron {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      color: var(--gray-400);
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; }
+    .faq-answer p {
+      padding-bottom: 20px;
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* ===== CTA FOOTER ===== */
+    .cta-section {
+      padding: 100px 0;
+      background: var(--gray-900);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(22, 163, 74, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-title { color: #fff; margin-bottom: 16px; }
+    .cta-section p { color: var(--gray-400); font-size: 18px; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .cta-note { color: var(--gray-500); font-size: 13px; margin-top: 20px; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 40px 0;
+      background: var(--gray-900);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .footer-logo span { font-size: 16px; font-weight: 700; color: #fff; }
+    .footer-copy { font-size: 13px; color: var(--gray-500); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-mockup { max-width: 600px; }
+      .feature-block { grid-template-columns: 1fr; gap: 32px; }
+      .feature-block.reverse { direction: ltr; }
+      .how-steps { grid-template-columns: repeat(2, 1fr); }
+      .how-step-arrow { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .hero { padding: 120px 0 60px; }
+      .hero-desc { font-size: 16px; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .audience-grid { grid-template-columns: 1fr; }
+      .how-steps { grid-template-columns: 1fr; }
+      .mockup-sidebar { display: none; }
+      .mockup-stats { grid-template-columns: repeat(3, 1fr); }
+      .mockup-table-header, .mockup-table-row { grid-template-columns: 3fr 2fr 1fr; }
+      .mockup-table-header > *:nth-child(3),
+      .mockup-table-row > *:nth-child(3) { display: none; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+      .header-cta span { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero-buttons { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+      .mockup-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(17, 24, 39, 0.6);
+      backdrop-filter: blur(6px);
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 20px;
+      overflow-y: auto;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
+      width: 100%;
+      max-width: 520px;
+      padding: 40px 36px 36px;
+      position: relative;
+      animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      margin: auto;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+      transition: all 0.15s;
+    }
+    .modal-close:hover { background: var(--gray-100); color: var(--gray-600); }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .modal-title {
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .modal-title span { color: var(--green-600); }
+    .modal-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.65;
+    }
+    .modal-trial {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 5px 14px;
+      background: var(--green-50);
+      color: var(--green-700);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 100px;
+    }
+
+    .modal-field { margin-bottom: 18px; }
+    .modal-field:last-of-type { margin-bottom: 24px; }
+    .modal-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .modal-field label .req { color: var(--green-600); margin-left: 2px; }
+    .modal-field input,
+    .modal-field textarea,
+    .modal-field select {
+      width: 100%;
+      padding: 10px 13px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      outline: none;
+      transition: all 0.15s;
+      color: var(--gray-900);
+      background: var(--gray-50);
+    }
+    .modal-field textarea { resize: vertical; min-height: 60px; }
+    .modal-field select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+    .modal-field input::placeholder,
+    .modal-field textarea::placeholder { color: var(--gray-400); font-size: 13px; }
+    .modal-field input:focus,
+    .modal-field textarea:focus,
+    .modal-field select:focus { border-color: var(--green-500); background: #fff; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1); }
+    .modal-field.error input,
+    .modal-field.error textarea,
+    .modal-field.error select { border-color: #ef4444; background: #fef2f2; }
+    .modal-field.error input:focus,
+    .modal-field.error textarea:focus,
+    .modal-field.error select:focus { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1); }
+    .modal-field .field-error {
+      font-size: 12px;
+      color: #ef4444;
+      margin-top: 4px;
+      display: none;
+    }
+    .modal-field.error .field-error { display: block; }
+
+    .modal-submit {
+      width: 100%;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      color: #fff;
+      background: var(--green-600);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .modal-submit:hover { background: var(--green-700); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
+    .modal-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .modal-success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .modal-success.active { display: block; }
+    .modal-success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .modal-success h3 {
+      font-family: 'Montserrat', 'Inter', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+    .modal-success p {
+      font-size: 14px;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 480px) {
+      .modal-overlay { padding: 16px 12px; }
+      .modal-card { padding: 28px 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <div>
+          <div class="logo-text">SnoopDoc</div>
+          <div class="logo-sub">документооборот для продакшена</div>
+        </div>
+      </a>
+      <button onclick="openModal()" class="btn-primary header-cta">
+        <span>Стать тестировщиком</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Набираем тестировщиков
+        </div>
+        <h1>Управляйте подрядчиками и&nbsp;документами <span>без хаоса</span></h1>
+        <p class="hero-desc">
+          SnoopDoc&nbsp;&mdash; сервис для видеопродакшенов, студий графики и&nbsp;фрилансеров.
+          Подрядчики, договоры, акты, подписание через СМС&nbsp;&mdash; всё в&nbsp;одном месте, а&nbsp;не&nbsp;в&nbsp;десяти чатах и&nbsp;таблицах.
+        </p>
+        <div class="hero-buttons">
+          <button onclick="openModal()" class="btn-primary">
+            Встать в очередь на тест
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+          <a href="#features" class="btn-secondary">Узнать больше</a>
+        </div>
+        <p class="hero-note">Бесплатно. Без обязательств. Влияете на продукт.</p>
+      </div>
+
+      <!-- HERO MOCKUP: Dashboard -->
+      <div class="hero-mockup">
+        <div class="mockup-topbar">
+          <span class="mockup-dot"></span>
+          <span class="mockup-dot"></span>
+          <span class="mockup-dot"></span>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-sidebar">
+            <div class="mockup-sidebar-logo">
+              <span>SnoopDoc</span>
+            </div>
+            <div class="mockup-nav-item active"><div class="mockup-nav-icon"></div>Обзор</div>
+            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Подрядчики</div>
+            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Проекты</div>
+            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Архив</div>
+            <div class="mockup-nav-item"><div class="mockup-nav-icon"></div>Шаблоны</div>
+          </div>
+          <div class="mockup-main">
+            <div class="mockup-header-text">Обзор</div>
+            <div class="mockup-header-sub">Добро пожаловать, Анна!</div>
+            <div class="mockup-stats">
+              <div class="mockup-stat-card">
+                <div class="mockup-stat-num">12</div>
+                <div class="mockup-stat-label">Активных проектов</div>
+              </div>
+              <div class="mockup-stat-card">
+                <div class="mockup-stat-num green">48</div>
+                <div class="mockup-stat-label">Подрядчиков</div>
+              </div>
+              <div class="mockup-stat-card">
+                <div class="mockup-stat-num">156</div>
+                <div class="mockup-stat-label">Документов</div>
+              </div>
+            </div>
+            <div class="mockup-table">
+              <div class="mockup-table-header">
+                <div>Проект</div>
+                <div>Срок сдачи</div>
+                <div>Продюсер</div>
+                <div>Статус</div>
+              </div>
+              <div class="mockup-table-row">
+                <div>
+                  <div class="mockup-project-name">Ролик ВкусВилл</div>
+                  <div class="mockup-project-client">ВкусВилл</div>
+                </div>
+                <div style="font-size:11px;color:var(--gray-500);">15.03.2026</div>
+                <div style="font-size:11px;color:var(--gray-600);">Анна К.</div>
+                <div><span class="mockup-badge mockup-badge-green">8/8</span></div>
+              </div>
+              <div class="mockup-table-row">
+                <div>
+                  <div class="mockup-project-name">Фильм для Сбера</div>
+                  <div class="mockup-project-client">Сбербанк</div>
+                </div>
+                <div style="font-size:11px;color:var(--gray-500);">28.03.2026</div>
+                <div style="font-size:11px;color:var(--gray-600);">Михаил Д.</div>
+                <div><span class="mockup-badge mockup-badge-blue">5/12</span></div>
+              </div>
+              <div class="mockup-table-row">
+                <div>
+                  <div class="mockup-project-name">Сериал «Новая жизнь»</div>
+                  <div class="mockup-project-client">Okko</div>
+                </div>
+                <div style="font-size:11px;color:var(--gray-500);">10.04.2026</div>
+                <div style="font-size:11px;color:var(--gray-600);">Елена С.</div>
+                <div><span class="mockup-badge mockup-badge-blue">3/9</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN POINTS -->
+  <section class="pain" id="problem">
+    <div class="container">
+      <div class="pain-header">
+        <div class="section-label">Знакомо?</div>
+        <h2 class="section-title">Продакшен без системы — это ежедневный хаос</h2>
+        <p class="section-subtitle">Если хотя бы один пункт про вас — SnoopDocрешает именно эти задачи</p>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-icon">&#128209;</div>
+          <h3>Подрядчики в таблицах и чатах</h3>
+          <p>Реквизиты в Excel, контакты в Telegram, договоры в почте. Найти нужного человека с актуальными данными — квест на 20 минут.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">&#128196;</div>
+          <h3>Документы теряются в процессе</h3>
+          <p>Договор отправили на подпись, но он завис. Акт подписан, но где файл — непонятно. Статус документа приходится выяснять в чатах.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">&#128260;</div>
+          <h3>Каждый проект — с нуля</h3>
+          <p>Новый проект — заново собирать контакты, оформлять договоры, вспоминать, как звали того монтажёра. Без переиспользования данных.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">&#128200;</div>
+          <h3>Нет прозрачности для руководства</h3>
+          <p>Сколько документов подписано? На каком этапе проект? Чтобы узнать статус, нужно написать в пять чатов и подождать час.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-header">
+        <div class="section-label">Возможности</div>
+        <h2 class="section-title">Всё, что нужно продакшену,<br>в одном сервисе</h2>
+        <p class="section-subtitle">SnoopDoc закрывает весь цикл: от базы подрядчиков до подписания документов через СМС</p>
+      </div>
+
+      <!-- Feature 1: Contractors -->
+      <div class="feature-block">
+        <div class="feature-text">
+          <h3>База подрядчиков</h3>
+          <p>Все подрядчики с реквизитами, контактами и историей проектов — в одном месте. Больше не нужно искать ИНН в переписке.</p>
+          <ul class="feature-list">
+            <li>ИП, самозанятые, юрлица, физлица — все типы</li>
+            <li>Банковские реквизиты и контакты</li>
+            <li>Ссылка для самостоятельного заполнения данных подрядчиком</li>
+            <li>Связь подрядчика со всеми проектами</li>
+          </ul>
+        </div>
+        <div class="feature-mockup">
+          <div class="mockup-topbar">
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+          </div>
+          <div class="fm-content">
+            <div class="fm-title">База подрядчиков</div>
+            <div class="fm-contractor-list">
+              <div class="fm-contractor">
+                <div class="fm-avatar">ЛА</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">Лаврикова Алёна Романовна</div>
+                  <div class="fm-contractor-role">Режиссёр, монтажёр</div>
+                </div>
+                <span class="fm-contractor-type fm-type-sz">СЗ</span>
+              </div>
+              <div class="fm-contractor">
+                <div class="fm-avatar" style="background:var(--green-700);">СИ</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">Ситдиков Илья Русланович</div>
+                  <div class="fm-contractor-role">Оператор-постановщик</div>
+                </div>
+                <span class="fm-contractor-type fm-type-ip">ИП</span>
+              </div>
+              <div class="fm-contractor">
+                <div class="fm-avatar" style="background:#4ade80;">КМ</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">Киселев Максим Витальевич</div>
+                  <div class="fm-contractor-role">Колорист</div>
+                </div>
+                <span class="fm-contractor-type fm-type-sz">СЗ</span>
+              </div>
+              <div class="fm-contractor">
+                <div class="fm-avatar" style="background:var(--green-800);">ПР</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">ООО «Продакшен Групп»</div>
+                  <div class="fm-contractor-role">VFX-студия</div>
+                </div>
+                <span class="fm-contractor-type fm-type-ul">ЮЛ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2: Documents + SMS signing -->
+      <div class="feature-block reverse">
+        <div class="feature-text">
+          <h3>Документы и подписание через СМС</h3>
+          <p>Все договоры и акты подписываются через СМС прямо в сервисе. Шаблоны документов разработаны совместно с юристом — вам не нужно ничего составлять с нуля.</p>
+          <ul class="feature-list">
+            <li>Подписание документов через СМС — быстро и юридически значимо</li>
+            <li>Готовые юридические шаблоны, разработанные с юристом</li>
+            <li>Отслеживание статуса: создан, на подписи, подписан</li>
+            <li>Автоматические уведомления о просроченных документах</li>
+          </ul>
+        </div>
+        <div class="feature-mockup">
+          <div class="mockup-topbar">
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+          </div>
+          <div class="fm-content">
+            <div class="fm-title">Документы проекта «Ролик ВкусВилл»</div>
+            <div class="fm-doc-flow">
+              <div class="fm-doc-header">
+                <div>Подрядчик / Роль</div>
+                <div>Договор</div>
+                <div>Акт</div>
+              </div>
+              <div class="fm-doc-row">
+                <div>
+                  <div class="fm-doc-label">Лаврикова А.Р.</div>
+                  <div class="fm-doc-sub">Режиссёр</div>
+                </div>
+                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
+                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
+              </div>
+              <div class="fm-doc-row">
+                <div>
+                  <div class="fm-doc-label">Ситдиков И.Р.</div>
+                  <div class="fm-doc-sub">Оператор</div>
+                </div>
+                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
+                <div><span class="fm-doc-status fm-status-progress">На подписи</span></div>
+              </div>
+              <div class="fm-doc-row">
+                <div>
+                  <div class="fm-doc-label">Киселев М.В.</div>
+                  <div class="fm-doc-sub">Колорист</div>
+                </div>
+                <div><span class="fm-doc-status fm-status-progress">На подписи</span></div>
+                <div><span class="fm-doc-status" style="background:rgba(255,255,255,0.06);color:var(--gray-500);">Создан</span></div>
+              </div>
+              <div class="fm-doc-row">
+                <div>
+                  <div class="fm-doc-label">Петров Д.А.</div>
+                  <div class="fm-doc-sub">Звукорежиссёр</div>
+                </div>
+                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
+                <div><span class="fm-doc-status fm-status-signed">СМС &#10003;</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Projects -->
+      <div class="feature-block">
+        <div class="feature-text">
+          <h3>Проекты и роли</h3>
+          <p>Создавайте проекты, назначайте роли, привязывайте подрядчиков. Вся команда проекта — перед глазами, от режиссёра до гафера.</p>
+          <ul class="feature-list">
+            <li>25+ готовых ролей для видеопродакшена</li>
+            <li>Назначение подрядчика на роль в 2 клика</li>
+            <li>Продюсер и ассистент привязаны к проекту</li>
+            <li>Дашборды для руководства с KPI</li>
+          </ul>
+        </div>
+        <div class="feature-mockup">
+          <div class="mockup-topbar">
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+            <span class="mockup-dot"></span>
+          </div>
+          <div class="fm-content">
+            <div class="fm-title">Команда проекта</div>
+            <div class="fm-contractor-list">
+              <div class="fm-contractor" style="border-left: 3px solid var(--green-500);">
+                <div class="fm-avatar">ЛА</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">Лаврикова А.Р.</div>
+                  <div class="fm-contractor-role">Режиссёр</div>
+                </div>
+                <span class="fm-doc-status fm-status-signed" style="font-size:11px;">2/2 док.</span>
+              </div>
+              <div class="fm-contractor" style="border-left: 3px solid var(--green-500);">
+                <div class="fm-avatar" style="background:var(--green-700);">СИ</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">Ситдиков И.Р.</div>
+                  <div class="fm-contractor-role">Оператор-постановщик</div>
+                </div>
+                <span class="fm-doc-status fm-status-progress" style="font-size:11px;">1/2 док.</span>
+              </div>
+              <div class="fm-contractor" style="border-left: 3px solid #fbbf24;">
+                <div class="fm-avatar" style="background:#4ade80;">КМ</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">Киселев М.В.</div>
+                  <div class="fm-contractor-role">Колорист</div>
+                </div>
+                <span class="fm-doc-status fm-status-wait" style="font-size:11px;">0/2 док.</span>
+              </div>
+              <div class="fm-contractor" style="border-left: 3px solid var(--green-500);">
+                <div class="fm-avatar" style="background:var(--green-800);">ПД</div>
+                <div class="fm-contractor-info">
+                  <div class="fm-contractor-name">Петров Д.А.</div>
+                  <div class="fm-contractor-role">Звукорежиссёр</div>
+                </div>
+                <span class="fm-doc-status fm-status-signed" style="font-size:11px;">2/2 док.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="container">
+      <div class="how-header">
+        <div class="section-label">Как это работает</div>
+        <h2 class="section-title">4 шага до тестирования</h2>
+        <p class="section-subtitle">Запуск занимает минимум времени. Мы берём на себя онбординг и поддержку</p>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-step-num">1</div>
+          <h3>Заполните анкету</h3>
+          <p>Расскажите о вашей студии или фриланс-практике. Это займёт 2 минуты</p>
+          <span class="how-step-arrow">&#8594;</span>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">2</div>
+          <h3>Мы свяжемся</h3>
+          <p>Обсудим ваши задачи и настроим сервис под ваш рабочий процесс</p>
+          <span class="how-step-arrow">&#8594;</span>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">3</div>
+          <h3>Тестируете</h3>
+          <p>Работаете с SnoopDoc на реальных проектах. Мы рядом и помогаем</p>
+          <span class="how-step-arrow">&#8594;</span>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">4</div>
+          <h3>Влияете на продукт</h3>
+          <p>Ваш фидбек напрямую формирует функции сервиса. Тестировщики получат лучшие условия</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIENCE -->
+  <section class="audience" id="audience">
+    <div class="container">
+      <div class="audience-header">
+        <div class="section-label">Для кого</div>
+        <h2 class="section-title">SnoopDoc создан для тех,<br>кто работает с подрядчиками</h2>
+        <p class="section-subtitle">Если у вас больше 5 подрядчиков на проект — вам точно нужна система</p>
+      </div>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <div class="audience-icon">&#127909;</div>
+          <h3>Видеопродакшены</h3>
+          <p>Студии, которые снимают рекламу, клипы, корпоративное видео</p>
+          <ul>
+            <li>10+ подрядчиков на проект</li>
+            <li>Договоры и акты на каждого</li>
+            <li>Несколько проектов одновременно</li>
+            <li>Продюсеры, ассистенты, руководство</li>
+          </ul>
+        </div>
+        <div class="audience-card">
+          <div class="audience-icon">&#127912;</div>
+          <h3>Студии графики</h3>
+          <p>Постпродакшен, VFX, моушен-дизайн, анимация</p>
+          <ul>
+            <li>Фрилансеры на разовых задачах</li>
+            <li>Разные типы оформления (ИП, СЗ)</li>
+            <li>Постоянная ротация команды</li>
+            <li>Нужна история по подрядчикам</li>
+          </ul>
+        </div>
+        <div class="audience-card">
+          <div class="audience-icon">&#128187;</div>
+          <h3>Фрилансеры</h3>
+          <p>Продюсеры и режиссёры, работающие с брендами напрямую</p>
+          <ul>
+            <li>Собираете команду под каждый проект</li>
+            <li>Сами ведёте документы</li>
+            <li>Нужен порядок в документах</li>
+            <li>Хотите выглядеть профессионально</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq-header">
+        <div class="section-label">Вопросы</div>
+        <h2 class="section-title">Частые вопросы</h2>
+        <p class="section-subtitle">Если не нашли ответ — спросите в анкете, мы ответим лично</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item open">
+          <button class="faq-question">
+            Сколько стоит тестирование?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Тестирование полностью бесплатно. Мы запускаем продукт и ищем первых пользователей, которые помогут довести его до идеала. Взамен вы получите лучшие условия после запуска.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Как долго длится тестирование?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Тестовый период — от 2 до 4 недель. Этого достаточно, чтобы попробовать SnoopDoc на реальном проекте и понять, подходит ли он вам.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Нужны ли технические навыки?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Нет. SnoopDoc — это веб-приложение с простым интерфейсом. Если вы пользуетесь Google Docs или Notion, с SnoopDoc разберётесь за 10 минут. Плюс мы поможем с онбордингом.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Мои данные будут в безопасности?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Да. Все данные хранятся на защищённых серверах. При необходимости подпишем NDA. Вы можете удалить свои данные в любой момент.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Что я получу как тестировщик?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Бесплатный доступ к сервису, персональный онбординг, приоритетную поддержку и специальные условия после запуска. Ваш фидбек будет напрямую влиять на развитие продукта.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Когда начнётся тестирование?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="faq-answer">
+            <p>Мы формируем группу тестировщиков прямо сейчас. Чем раньше заполните анкету — тем быстрее получите доступ. Первые приглашения рассылаем по мере готовности.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section" id="cta">
+    <div class="container">
+      <div class="section-label" style="background:rgba(22,163,74,0.15);color:#4ade80;">Присоединяйтесь</div>
+      <h2 class="section-title">Готовы навести порядок<br>в документообороте?</h2>
+      <p>Заполните короткую анкету и встаньте в очередь на тестирование. Это займёт 2 минуты.</p>
+      <div class="cta-buttons">
+        <button onclick="openModal()" class="btn-primary" style="padding:18px 40px;font-size:18px;">
+          Заполнить анкету тестировщика
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+      <p class="cta-note">Бесплатно. Никакого спама. Выйти можно в любой момент.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="#" class="footer-logo">
+        <span>SnoopDoc</span>
+      </a>
+      <div class="footer-copy">&copy; 2026 SnoopDoc. Документооборот для продакшена.</div>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()" aria-label="Закрыть">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <div id="modalForm">
+        <div class="modal-header">
+          <h2 class="modal-title">Анкета тестировщика <span>SnoopDoc</span></h2>
+          <p class="modal-desc">Анкета занимает пару минут.</p>
+        </div>
+
+        <form id="questionnaireForm" novalidate>
+          <div class="modal-field" id="field-name">
+            <label for="userName">Как тебя зовут?<span class="req">*</span></label>
+            <input type="text" id="userName" placeholder="Имя и фамилия">
+            <div class="field-error">Заполните это поле</div>
+          </div>
+
+          <div class="modal-field" id="field-telegram">
+            <label for="telegram">Telegram для связи<span class="req">*</span></label>
+            <input type="text" id="telegram" placeholder="@username">
+            <div class="field-error">Заполните это поле</div>
+          </div>
+
+          <div class="modal-field" id="field-company">
+            <label for="company">Какую компанию ты представляешь?<span class="req">*</span></label>
+            <input type="text" id="company" placeholder="Название компании">
+            <div class="field-error">Заполните это поле</div>
+          </div>
+
+          <div class="modal-field" id="field-website">
+            <label for="website">Сайт компании</label>
+            <input type="text" id="website" placeholder="https://">
+          </div>
+
+          <div class="modal-field" id="field-company-type">
+            <label for="companyType">Вид компании<span class="req">*</span></label>
+            <select id="companyType">
+              <option value="" disabled selected>Выберите</option>
+              <option value="Видеопродакшен">Видеопродакшен</option>
+              <option value="Студия графики / VFX / моушен">Студия графики / VFX / моушен</option>
+              <option value="Продакшен полного цикла">Продакшен полного цикла</option>
+              <option value="Фриланс">Фриланс</option>
+              <option value="Другое">Другое</option>
+            </select>
+            <div class="field-error">Выберите вид компании</div>
+          </div>
+
+          <div class="modal-field" id="field-process">
+            <label for="process">Опиши текущий процесс: как вы обычно создаёте, согласуете и подписываете договоры</label>
+            <textarea id="process" rows="3" placeholder="Не обязательно, но поможет нам настроить SnoopDoc под вас"></textarea>
+          </div>
+
+          <div class="modal-field" id="field-contracts">
+            <label for="contracts">Сколько нужно оформлять договоров с подрядчиками в месяц примерно?<span class="req">*</span></label>
+            <input type="text" id="contracts" placeholder="Например, 10–15">
+            <div class="field-error">Заполните это поле</div>
+          </div>
+
+          <div class="modal-field" id="field-automation">
+            <label for="automation">Был ли опыт автоматизации документооборота?<span class="req">*</span></label>
+            <input type="text" id="automation" placeholder="Расскажите кратко">
+            <div class="field-error">Заполните это поле</div>
+          </div>
+
+          <button type="submit" class="modal-submit" id="submitBtn">Отправить анкету</button>
+        </form>
+      </div>
+
+      <div class="modal-success" id="modalSuccess">
+        <div class="modal-success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h3>Спасибо!</h3>
+        <p>Мы получили вашу анкету и скоро свяжемся с вами.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Supabase config =====
+    const SUPABASE_URL = 'https://fqncyjknqqawianlxorq.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_UnLUSzwWw7Vchp6m-dIgMQ_hLQqq6G0';
+
+    // ===== Header scroll effect =====
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // ===== FAQ accordion =====
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    // ===== Smooth scroll for anchor links =====
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ===== Modal =====
+    const modal = document.getElementById('modal');
+    const modalForm = document.getElementById('modalForm');
+    const modalSuccess = document.getElementById('modalSuccess');
+    const form = document.getElementById('questionnaireForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      // Reset after close animation
+      setTimeout(() => {
+        form.reset();
+        modalForm.style.display = '';
+        modalSuccess.classList.remove('active');
+        document.querySelectorAll('.modal-field').forEach(f => f.classList.remove('error'));
+      }, 300);
+    }
+
+    // Close on overlay click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+
+    // Form submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fields = {
+        name: document.getElementById('userName').value.trim(),
+        telegram: document.getElementById('telegram').value.trim(),
+        company: document.getElementById('company').value.trim(),
+        website: document.getElementById('website').value.trim(),
+        companyType: document.getElementById('companyType').value,
+        process: document.getElementById('process').value.trim(),
+        contracts: document.getElementById('contracts').value.trim(),
+        automation: document.getElementById('automation').value.trim(),
+      };
+
+      // Validate required fields
+      const required = [
+        ['name', 'field-name'],
+        ['telegram', 'field-telegram'],
+        ['company', 'field-company'],
+        ['companyType', 'field-company-type'],
+        ['contracts', 'field-contracts'],
+        ['automation', 'field-automation'],
+      ];
+
+      let valid = true;
+      document.querySelectorAll('.modal-field').forEach(f => f.classList.remove('error'));
+
+      for (const [key, id] of required) {
+        if (!fields[key]) {
+          document.getElementById(id).classList.add('error');
+          valid = false;
+        }
+      }
+
+      if (!valid) return;
+
+      // Loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправка...';
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/questionnaire_responses`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            name: fields.name,
+            telegram: fields.telegram,
+            company: fields.company,
+            company_website: fields.website || null,
+            company_type: fields.companyType,
+            current_process: fields.process || null,
+            contracts_per_month: fields.contracts,
+            automation_experience: fields.automation
+          })
+        });
+
+        if (!res.ok) throw new Error('Ошибка сервера');
+
+        // Show success
+        modalForm.style.display = 'none';
+        modalSuccess.classList.add('active');
+      } catch (err) {
+        alert('Не удалось отправить анкету. Попробуйте позже.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Отправить';
+      }
+    });
+  </script>
+</body>
+</html>
