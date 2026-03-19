@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тарифы — Снуп Док</title>
+  <meta name="description" content="Тарифы Снуп Док — от 2 490 ₽/мес. Фиксированная подписка, без комиссий с выплат.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23227bff'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Montserrat,Arial,sans-serif' font-weight='900' font-size='38' fill='white'%3E%D0%A1%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue-50: #eff6ff;
+      --blue-100: #dbeafe;
+      --blue-400: #60a5fa;
+      --blue-500: #227bff;
+      --blue-600: #1b62cc;
+      --blue-700: #1550a8;
+      --blue-800: #103d80;
+      --purple-500: #8b5cf6;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --green-500: #22c55e;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--gray-900);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      background: #fff;
+    }
+
+    /* Header */
+    .header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--gray-100);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-mark { display: inline-flex; align-items: center; text-decoration: none; }
+    .logo-snoop { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 22px; color: var(--blue-500); }
+    .logo-doc { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 22px; color: var(--gray-900); margin-left: 5px; }
+    .header-back { font-size: 14px; color: var(--blue-500); text-decoration: none; font-weight: 500; }
+    .header-back:hover { text-decoration: underline; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .cost-hero {
+      text-align: center;
+      padding: 56px 24px 40px;
+    }
+    .cost-hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(32px, 5vw, 48px);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--blue-500), var(--purple-500));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cost-hero p {
+      font-size: 17px;
+      color: var(--gray-500);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .cost-hero .vat-note {
+      font-size: 13px;
+      color: var(--gray-400);
+      margin-top: 8px;
+    }
+
+    /* Tariff cards */
+    .tariffs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 0 24px;
+      max-width: 1200px;
+      margin: 0 auto 48px;
+    }
+    .tariff {
+      border: 2px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 28px 22px;
+      position: relative;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .tariff:hover {
+      border-color: var(--blue-400);
+      box-shadow: 0 8px 24px rgba(34,123,255,0.08);
+    }
+    .tariff.popular {
+      border-color: var(--blue-500);
+      box-shadow: 0 8px 24px rgba(34,123,255,0.12);
+    }
+    .tariff.popular::before {
+      content: 'Популярный';
+      position: absolute;
+      top: -11px;
+      left: 22px;
+      background: var(--blue-500);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 12px;
+      border-radius: 6px;
+    }
+    .tariff-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+    .tariff-desc {
+      font-size: 13px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+    }
+    .tariff-price {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 32px;
+      color: var(--blue-500);
+    }
+    .tariff-period { font-size: 14px; color: var(--gray-400); font-weight: 400; }
+    .tariff-year { font-size: 12px; color: var(--gray-400); margin-bottom: 16px; }
+    .tariff-features { list-style: none; margin-bottom: 16px; }
+    .tariff-features li {
+      font-size: 13px;
+      color: var(--gray-600);
+      padding: 5px 0 5px 22px;
+      position: relative;
+    }
+    .tariff-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green-500);
+      font-weight: 700;
+    }
+    .tariff-limit {
+      font-size: 12px;
+      color: var(--gray-400);
+      padding-top: 12px;
+      border-top: 1px solid var(--gray-100);
+    }
+    .tariff-cta {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: var(--blue-500);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 16px;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .tariff-cta:hover {
+      background: var(--blue-600);
+      transform: translateY(-1px);
+    }
+    .tariff-cta.outline {
+      background: none;
+      color: var(--blue-500);
+      border: 2px solid var(--blue-500);
+    }
+    .tariff-cta.outline:hover {
+      background: var(--blue-50);
+      transform: translateY(-1px);
+    }
+
+    /* PEP */
+    .pep-section {
+      max-width: 800px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .pep-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .pep-price {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      color: var(--blue-500);
+    }
+    .pep-desc { font-size: 14px; color: var(--gray-500); margin-top: 6px; }
+
+    /* Extras */
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+    .extras {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      max-width: 1000px;
+      margin: 0 auto 48px;
+      padding: 0 24px;
+    }
+    .extra-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .extra-name {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .extra-desc { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+    .extra-price { font-weight: 700; color: var(--blue-500); font-size: 14px; margin-top: 8px; }
+
+    /* Advantage */
+    .advantage {
+      background: var(--blue-50);
+      border-left: 4px solid var(--blue-500);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      max-width: 800px;
+      margin: 0 auto 48px;
+      font-size: 14px;
+      color: var(--blue-800);
+      line-height: 1.7;
+    }
+    .advantage strong { font-weight: 700; }
+
+    /* Footer */
+    .footer {
+      padding: 20px 0;
+      border-top: 1px solid var(--gray-100);
+      text-align: center;
+    }
+    .footer-text { font-size: 12px; color: var(--gray-400); }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .tariffs { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .tariffs { grid-template-columns: 1fr; }
+      .cost-hero { padding: 40px 20px 32px; }
+      .tariff-price { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo-mark">
+        <span class="logo-snoop">Снуп</span><span class="logo-doc">Док</span>
+      </a>
+      <a href="/" class="header-back">&larr; На главную</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <div class="cost-hero">
+    <h1>Тарифы</h1>
+    <p>Фиксированная подписка. Без комиссий с выплат подрядчикам. Чем больше платите подрядчикам — тем выгоднее СнупДок.</p>
+    <div class="vat-note">Все цены без НДС</div>
+  </div>
+
+  <!-- Tariff cards -->
+  <div class="tariffs">
+
+    <div class="tariff">
+      <div class="tariff-name">Соло</div>
+      <div class="tariff-desc">Фрилансер-продюсер</div>
+      <div class="tariff-price">2 490 <span class="tariff-period">₽/мес</span></div>
+      <div class="tariff-year">24 900 ₽/год (−17%)</div>
+      <ul class="tariff-features">
+        <li>Шаблоны договоров с передачей РИД</li>
+        <li>Статусы документов</li>
+        <li>Роли и доступы</li>
+        <li>ПЭП-подписание</li>
+      </ul>
+      <div class="tariff-limit">До 20 документов/мес · 1 пользователь</div>
+    </div>
+
+    <div class="tariff">
+      <div class="tariff-name">Студия</div>
+      <div class="tariff-desc">Малый продакшн (3–10 чел)</div>
+      <div class="tariff-price">5 990 <span class="tariff-period">₽/мес</span></div>
+      <div class="tariff-year">59 900 ₽/год (−17%)</div>
+      <ul class="tariff-features">
+        <li>Всё из тарифа Соло</li>
+        <li>Добавление сотрудников</li>
+        <li>Загрузка своих шаблонов</li>
+      </ul>
+      <div class="tariff-limit">До 50 документов/мес</div>
+    </div>
+
+    <div class="tariff">
+      <div class="tariff-name">Продакшн</div>
+      <div class="tariff-desc">Средний продакшн (10–30 чел)</div>
+      <div class="tariff-price">8 990 <span class="tariff-period">₽/мес</span></div>
+      <div class="tariff-year">89 900 ₽/год (−17%)</div>
+      <ul class="tariff-features">
+        <li>Всё из тарифа Студия</li>
+        <li>Несколько юрлиц</li>
+        <li>Приоритетная поддержка</li>
+      </ul>
+      <div class="tariff-limit">До 200 документов/мес</div>
+    </div>
+
+    <div class="tariff">
+      <div class="tariff-name">Кино</div>
+      <div class="tariff-desc">Кинопродакшн</div>
+      <div class="tariff-price">17 990 <span class="tariff-period">₽/мес</span></div>
+      <div class="tariff-year">179 900 ₽/год (−17%)</div>
+      <ul class="tariff-features">
+        <li>Всё из тарифа Продакшн</li>
+        <li>Безлимит документов</li>
+        <li>Выделенный менеджер</li>
+      </ul>
+      <div class="tariff-limit">Без ограничений</div>
+    </div>
+
+  </div>
+
+  <!-- Extras -->
+  <div class="section-title">Дополнительно</div>
+  <div class="extras">
+    <div class="extra-card">
+      <div class="extra-name">Пакет документов</div>
+      <div class="extra-desc">Не хватило лимита в этом месяце? Докупите пакет — без перехода на следующий тариф.</div>
+      <div class="extra-price">590 ₽ за +10 документов</div>
+    </div>
+    <div class="extra-card">
+      <div class="extra-name">Консультация юриста</div>
+      <div class="extra-desc">Разовая консультация по договорам с подрядчиками, передаче РИД, 565-ФЗ.</div>
+      <div class="extra-price">3 000 ₽</div>
+    </div>
+    <div class="extra-card">
+      <div class="extra-name">Интеграция с облаком</div>
+      <div class="extra-desc">Автоматическая выгрузка подписанных документов в Яндекс Диск или Google Drive.</div>
+      <div class="extra-price">Цена индивидуально</div>
+    </div>
+    <div class="extra-card">
+      <div class="extra-name">Кастомная версия</div>
+      <div class="extra-desc">Доработка под ваши процессы, интеграции с 1С, Битрикс, кастомный брендинг.</div>
+      <div class="extra-price">Цена индивидуально</div>
+    </div>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-text">&copy; 2026 Снуп Док</div>
+  </footer>
+
+
+</body>
+</html>
